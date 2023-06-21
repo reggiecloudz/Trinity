@@ -1,0 +1,41 @@
+@model AuthenticationModel
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<main>
+    <div class="container">
+        <div class="row justify-content-center align-items-center vh-100 py-5">
+            <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+                <div class="card card-body text-center p-4 p-sm-5">
+                    <h1 class="mb-2">Sign in</h1>
+                    <p class="mb-0">Don't have an account?<a asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"> Click here to sign up</a></p>
+            
+                    <form asp-route-returnurl="@ViewData["ReturnUrl"]" class="mt-sm-4" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="UserName" class="form-control" placeholder="Enter User Name" aria-required="true" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+            
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="Password" class="form-control" placeholder="Enter Password" aria-required="true" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">Login</button></div>
+                        
+                        <p class="mb-0 mt-3">
+                            &copy;2023 <a target="_blank" href="#">Noah Community Action Network</a> All rights reserved
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

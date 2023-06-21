@@ -1,0 +1,21 @@
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = $"{Model.FullName} Applications";
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <partial name="Members/_MemberNav" />
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("Applicants/_ApplicationTable", Model.Applications)
+            </div>
+        </div>
+    </div>
+</main>

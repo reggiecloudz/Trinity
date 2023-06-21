@@ -1,0 +1,62 @@
+@model Trinity.Mvc.Domain.Proposal
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Proposal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Problem" class="control-label"></label>
+                <input asp-for="Problem" class="form-control" />
+                <span asp-validation-for="Problem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Goal" class="control-label"></label>
+                <input asp-for="Goal" class="form-control" />
+                <span asp-validation-for="Goal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Beneficiaries" class="control-label"></label>
+                <input asp-for="Beneficiaries" class="form-control" />
+                <span asp-validation-for="Beneficiaries" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Importance" class="control-label"></label>
+                <input asp-for="Importance" class="form-control" />
+                <span asp-validation-for="Importance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <input asp-for="Solution" class="form-control" />
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Execution" class="control-label"></label>
+                <input asp-for="Execution" class="form-control" />
+                <span asp-validation-for="Execution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectId" class="control-label"></label>
+                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

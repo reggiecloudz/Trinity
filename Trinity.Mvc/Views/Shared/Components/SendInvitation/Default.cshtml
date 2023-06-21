@@ -1,0 +1,48 @@
+@model IEnumerable<ProjectSupporter>
+
+<div class="modal fade" id="sendInvitationModal" tabindex="-1" aria-labelledby="sendInvitationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sendInvitationLabel">Send Invitation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-3">
+                            <div class="card shadow-none text-center">
+                                <!-- Card body -->
+                                <div class="card-body p-2 pb-0">
+                                    <div class="avatar avatar-xl">
+                                        <a href="#!">
+                                            <img class="avatar-img rounded-circle" src="~/media/members/@item.Supporter!.AvatarImage" alt="">
+                                        </a>
+                                    </div>
+                                    <h6 class="card-title mb-1 mt-3"> <a href="#!"> @item.Supporter!.FullName </a></h6>
+                                    <p class="mb-0 small lh-sm">@item.Position</p>
+                                </div>
+                                <!-- Card footer -->
+                                <div class="card-footer p-2 border-0">
+                                    <form method="post" asp-controller="Invitations" asp-action="Create">
+                                        <div class="form-group">
+                                            <input type="text" name="Message" class="form-control" placeholder="Send message" />
+                                        </div>
+                                        <input type="hidden" name="MemberId" value="@item.SupporterId" />
+                                        <input type="hidden" name="EventId" value="@ViewBag.EventId" />
+                                        <button type="submit" id="addMemberBtn"  class="my-3 btn btn-sm btn-primary-soft w-100"> Invite </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Close</button>
+            </div>
+        </div>
+    </div>
+</div>

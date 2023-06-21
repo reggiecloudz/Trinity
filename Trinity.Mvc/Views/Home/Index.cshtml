@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<partial name="_NavBar" />
+
+<main class="mb-0" role="main">
+    <div class="mt-n4">
+        <partial name="Home/_HomeHero" />
+        @await Component.InvokeAsync("HomeProjects")
+    </div>
+</main>
+
+<partial name="_Footer" />

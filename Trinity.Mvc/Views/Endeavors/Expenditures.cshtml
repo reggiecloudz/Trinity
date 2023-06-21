@@ -1,0 +1,32 @@
+@model Project
+
+@{
+    ViewData["Title"] = $"{Model.Name} Expenditures";
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8 vstack gap-4">
+                @await Html.PartialAsync("Projects/_ProjectHeader", Model)
+
+                 <div class="row g-4 pb-3">
+                    <div class="col-12">
+                        @await Html.PartialAsync("Expenditures/_ExpenditureCard", Model.Expenditures)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-12">
+                        @await Html.PartialAsync("Projects/_ProjectStats", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<partial name="_Footer" />

@@ -1,0 +1,40 @@
+@model Expenditure
+
+<div class="modal fade" id="saveExpenditureModal" tabindex="-1" aria-labelledby="saveExpenditureLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveExpenditureLabel">Save Expenditure</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="expenditure-form" method="post" asp-controller="Expenditures" asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Item" class="control-label"></label>
+                        <input asp-for="Item" class="form-control" />
+                        <span asp-validation-for="Item" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Cost" class="control-label"></label>
+                        <input asp-for="Cost" class="form-control" />
+                        <span asp-validation-for="Cost" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Purpose" class="control-label"></label>
+                        <textarea asp-for="Purpose" class="form-control"></textarea>
+                        <span asp-validation-for="Purpose" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="ProjectId" class ="form-control" value="@ViewBag.ProjectId" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="expenditure-form" class="btn btn-primary">Save now</button>
+                <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

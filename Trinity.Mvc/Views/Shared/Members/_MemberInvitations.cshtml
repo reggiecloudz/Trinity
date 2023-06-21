@@ -1,0 +1,53 @@
+@model IEnumerable<Invitation>
+
+<div class="row g-3">
+@foreach (var item in Model)
+{
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+                <h1 class="h4 card-title">@item.Event!.Name</h1>
+            </div>
+            <div class="card-body">
+                <p>
+                    @item.Message
+                </p>
+                <hr/>
+                <p class="small text-secondary">
+                    <i class="fa-solid fa-list-check me-2"></i> @item.Event!.Project!.Name
+                </p>
+                <p class="small text-secondary">
+                    <i class="fa-solid fa-map-location-dot me-2"></i> @item.Event!.Location
+                </p>
+                <p class="small text-secondary">
+                    <i class="fa-solid fa-clock me-2"></i> @item.Event!.Start.ToString("MM/d/yyyy HH:mm tt") - @item.Event!.End.ToString("HH:mm tt")
+                </p>
+                <hr/>
+                <div class="row g-3">
+                    @if(item.Acceptance == "Accepted")
+                    {
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-success btn-block w-100" disabled> @item.Acceptance</button>
+                        </div>
+                    }
+                    else if(item.Acceptance == "Declined")
+                    {
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-danger btn-block w-100" disabled> @item.Acceptance</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col">
+                            <a asp-controller="Invitations" asp-action="Accept" asp-route-id="@item.Id" class="btn btn-primary btn-block w-100">Accept</a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="btn btn-cta-soft btn-block w-100"> Decline</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>     
+    </div>
+}
+</div>

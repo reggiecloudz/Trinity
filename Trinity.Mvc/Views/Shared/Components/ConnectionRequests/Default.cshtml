@@ -1,0 +1,28 @@
+@model IEnumerable<ConnectionRequest>
+
+<div class="row g-4">
+    @foreach (var request in Model)
+    {
+        <div class="col-12">
+            <div class="hstack gap-2 mb-3">
+                <!-- Avatar -->
+                <div class="avatar">
+                    <a href="#!"><img class="avatar-img rounded-circle" src="~/media/members/@(request.Requester!.AvatarImage)" alt=""></a>
+                </div>
+                <!-- Title -->
+                <div class="overflow-hidden">
+                    <a class="h6 mb-0" href="#!">@request.Requester.FullName </a>
+                    <p class="mb-0 small text-truncate">@request.Requester.Occupation</p>
+                </div>
+                <!-- Button -->
+                <a class="btn btn-cta-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-minus"> </i></a>
+                <a class="btn btn-primary-soft rounded-circle icon-md" href="#"><i class="fa-solid fa-plus"> </i></a>
+            </div>
+        </div>
+    }
+    <div class="col-12">
+        <div class="d-grid mt-3">
+            <a class="btn btn-sm btn-primary-soft" href="#!">View more</a>
+        </div>
+    </div>
+</div>

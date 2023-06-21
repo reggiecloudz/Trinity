@@ -1,0 +1,61 @@
+@model Trinity.Mvc.Domain.Proposal
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Proposal</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Problem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Problem)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Goal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Goal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Beneficiaries)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Beneficiaries)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Importance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Importance)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Solution)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Solution)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Execution)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Execution)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Project)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Project!.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

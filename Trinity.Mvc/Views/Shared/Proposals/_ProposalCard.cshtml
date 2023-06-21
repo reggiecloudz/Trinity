@@ -1,0 +1,43 @@
+@model Proposal
+
+<div class="card">
+    <div class="card-header border-0 pb-0">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div>
+                    <div class="nav nav-divider">
+                        <h4 class="nav-item card-title mb-0"> 
+                            Proposal
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5>Problem</h5>
+        <p class="mb-3">
+            @Model.Problem
+        </p>
+        <h5>Goal</h5>
+        <p class="mb-3">
+            @Model.Goal
+        </p>
+        <h5>Beneficiaries</h5>
+        <p class="mb-3">
+            @Model.Beneficiaries
+        </p>
+        <h5>Importance</h5>
+        <p class="mb-3">
+            @Model.Importance
+        </p>
+        <h5>Solution</h5>
+        <p class="mb-3">
+            @Model.Solution
+        </p>
+        <h5>Execution</h5>
+        <p class="mb-3">
+            @Model.Execution
+        </p>
+    </div>
+</div>

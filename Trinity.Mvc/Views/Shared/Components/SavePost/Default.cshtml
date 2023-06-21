@@ -1,0 +1,25 @@
+@model Post
+
+<form method="post" asp-controller="Posts" asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group mb-3">
+        <label asp-for="Subject" class="control-label"></label>
+        <input asp-for="Subject" class="form-control" />
+        <span asp-validation-for="Subject" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="TopicId" class="control-label"></label>
+        <select asp-for="TopicId" class ="form-select" asp-items="ViewBag.TopicId"></select>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Body" class="control-label"></label>
+        <textarea asp-for="Body" id="Body" class="form-control"></textarea>
+        <span asp-validation-for="Body" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="DiscussionGroupId" class ="form-control" value="@ViewBag.DiscussionGroupId"></select>
+    </div>
+    <div class="form-group my-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>

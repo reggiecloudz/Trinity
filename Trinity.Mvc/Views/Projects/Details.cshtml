@@ -1,0 +1,20 @@
+@model Project
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                @await Html.PartialAsync("Projects/_ProjectNav", Model)
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("Projects/_ProjectTabs", Model)
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,36 @@
+@model IEnumerable<Project>
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">Projects</h1>
+        <!-- Button modal -->
+        <a class="btn btn-complementary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveProjectModal">
+            <i class="fa-solid fa-plus pe-1"></i> Create projects
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Cause</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td scope="row">@item.Name</td>
+                            <td>@item.Cause!.Name</td>
+                            <td>
+                                <a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

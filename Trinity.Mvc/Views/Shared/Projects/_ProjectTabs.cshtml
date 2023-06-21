@@ -1,0 +1,103 @@
+@model Project
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">@Model.Name</h1>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
+            <div class="btn-group" role="group" aria-label="Button Group">
+                <a class="btn btn-primary-soft" href="#"> 
+                    <i class="fa-solid fa-eye pe-1"></i> Profile
+                </a>
+                <a class="btn btn-complementary-soft" href="#"> 
+                    <i class="fa-solid fa-compass pe-1"></i> All projects
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Details </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Proposal </a> </li>
+        </ul>
+
+        <div class="tab-content mb-0 pb-0">
+            <div class="tab-pane fade show active" id="tab-1">
+                <form method="post" action="#" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="PhotoUpload" class="control-label"></label>
+                        <input asp-for="PhotoUpload" type="file" class="form-control" />
+                        <span asp-validation-for="PhotoUpload" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check mb-3">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Closed" /> @Html.DisplayNameFor(model => model.Closed)
+                        </label>
+                    </div>
+                    <div class="form-group form-check mb-3">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                        </label>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="CauseId" class="control-label"></label>
+                        <select asp-for="CauseId" class="form-control" asp-items="ViewBag.CauseId"></select>
+                        <span asp-validation-for="CauseId" class="text-danger"></span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="tab-2">
+                <form method="post" asp-controller="Proposals" asp-action="Edit" asp-route-id="@Model.Proposal!.Id" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="@Model.Proposal!.Id" />
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Problem" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Problem" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Problem" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Goal" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Goal" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Goal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Beneficiaries" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Beneficiaries" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Beneficiaries" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Importance" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Importance" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Importance" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Solution" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Solution" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Solution" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="@Model.Proposal!.Execution" class="control-label"></label>
+                        <textarea asp-for="@Model.Proposal!.Execution" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Proposal!.Execution" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="@Model.Proposal!.ProjectId" class="form-control" type="hidden" />
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

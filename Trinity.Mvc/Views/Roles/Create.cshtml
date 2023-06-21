@@ -1,0 +1,68 @@
+@model string
+@{
+    ViewData["Title"] = "Create";
+}
+  
+<!-- Page Title -->
+<div class="bg-light py-4 mb-4 mb-lg-10">
+    <div class="container d-lg-flex justify-content-between align-items-center py-2 py-lg-4">
+        <div class="pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 mb-0">Add Role</h1>
+        </div>
+        <div class="pt-2 pt-lg-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb flex-lg-nowrap justify-content-center justify-content-lg-start">
+                    <li class="breadcrumb-item">
+                        <a class="text-nowrap" asp-controller="Home" asp-action="Index">
+                            <i class="ri-store-2-line"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item text-nowrap"><a asp-action="Index">Roles</a>
+                    </li>
+                    <li class="breadcrumb-item text-nowrap active" aria-current="page">Add Role</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Page Title -->
+
+<!-- Role Form -->
+<div class="container my-4">
+    <div class="border border-gray-200 rounded-3 mb-10">
+        <ul class="nav nav-tabs mb-0"role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" aria-current="page" asp-action="Index">Roles</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" aria-current="page" asp-action="Create">Create New</a>
+            </li>
+        </ul>
+
+        <div class="p-5 p-md-8">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="add-product-tab" role="tabpanel">
+                    <div class="row">
+                        <div class="col">
+                            <form asp-action="Create" method="post">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group mb-3">
+                                    <label for="name">Name:</label>
+                                    <input name="name" class="form-control" />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <button type="submit" class="btn btn-primary btn-block w-100">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="my-4">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+<!-- Role Form -->

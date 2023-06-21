@@ -1,0 +1,28 @@
+@model IEnumerable<ApplicationUser>
+
+<div class="row g-3">
+    @foreach (var user in Model)
+    {
+        <div class="col-4">
+            <div class="card shadow-none text-center">
+                <!-- Card body -->
+                <div class="card-body p-2 pb-0">
+                    <div class="avatar avatar-xl">
+                        <a href="#!">
+                            <img class="avatar-img rounded-circle" src="~/media/members/@user.AvatarImage" alt="">
+                        </a>
+                    </div>
+                    <h6 class="card-title mb-1 mt-3"> <a href="#!"> @user.FullName </a></h6>
+                    <p class="mb-0 small lh-sm">50 mutual connections</p>
+                </div>
+                <!-- Card footer -->
+                <div class="card-footer p-2 border-0">
+                    <form method="post" asp-controller="Connections" asp-action="SendRequest">
+                        <input type="hidden" name="ReceiverId" value="@user.Id" />
+                        <button type="submit" id="addConnectBtn"  class="btn btn-sm btn-primary-soft w-100"> Connect </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

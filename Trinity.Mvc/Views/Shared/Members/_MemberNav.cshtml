@@ -1,0 +1,108 @@
+<!-- Advanced filter responsive toggler START -->
+<div class="d-flex align-items-center d-lg-none">
+    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+        <span class="btn btn-primary"><i class="fa-solid fa-sliders-h"></i></span>
+        <span class="h6 mb-0 fw-bold d-lg-none ms-2">Menu</span>
+    </button>
+</div>
+<!-- Advanced filter responsive toggler END -->
+
+<nav class="navbar navbar-expand-lg mx-0 sticky-lg-top"> 
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+        <!-- Offcanvas header -->
+        <div class="offcanvas-header">
+            <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body d-block px-2 px-lg-0">
+            <div class="card overflow-hidden">
+                <div class="h-100px cover-gradient"></div>
+                    <div class="card-body pt-0">
+                        <div class="text-center">
+                        <div class="avatar avatar-xxl mt-n5 mb-3">
+                            <a href="#!">
+                                <img class="avatar-img rounded-circle border border-white border-3" src="~/media/members/@(User.FindFirst("ProfileImage")!.Value)" alt="">
+                            </a>
+                        </div>
+
+                        <h5 class="mb-0"> <a href="#"> @(User.FindFirst("FullName")!.Value) </a> </h5>
+                        <small>@(User.FindFirst("Occupation")!.Value)</small>
+                    </div>
+
+                    <!-- Divider -->
+                    <hr>
+
+                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Projects" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-list-check me-2"></i>
+                                Projects
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Applications" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-file-signature me-2"></i>
+                                Applications
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Connections" asp-route-id="@(User.FindFirst("UserId")!.Value)">
+                                <i class="fa-solid fa-circle-nodes me-2"></i>
+                                Connections
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Invitations" asp-route-id="@(User.FindFirst("UserId")!.Value)">
+                                <i class="fa-solid fa-envelope-open-text me-2"></i>
+                                Invitations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" href="#">
+                                <i class="fa-solid fa-calendar-days me-2"></i>
+                                Calendar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="DiscussionGroup" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-message me-2"></i>
+                                Discussion Group
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="DiscussionGroup" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-comments me-2"></i>
+                                Discussions
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center py-2">
+                    <a class="btn btn-link btn-sm" href="#">View Profile </a>
+                </div>
+            </div>
+
+            <ul class="nav small mt-4 justify-content-center lh-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="#">Support </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="#">Docs </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Help</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Privacy & terms</a>
+                </li>
+            </ul>
+            <p class="small text-center mt-1">©2023 <a class="text-body" target="_blank" href="#"> Noah Community Action Network</a></p>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,42 @@
+@model TextEditorModel
+@using System.Web
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <form asp-action="Index" enctype="multipart/form-data" method="post">
+            <textarea asp-for="Content" id="Content"></textarea>
+            <input type="submit" value="Submit" class="my-3 btn btn-primary" />
+        </form>
+    </div>
+    <div class="col-6">
+        <h1>Results</h1>
+        <p>@Html.Raw(HttpUtility.HtmlDecode(ViewBag.EncodedContent))</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#Content',
+            height: 300,
+            promotion: false,
+            plugins: [
+                'advlist', 'autolink', 'link', 'image', 'lists', 'preview', 'anchor', 'pagebreak',
+                'searchreplace', 'wordcount', 'code', 'fullscreen', 'insertdatetime',
+                'media', 'table'
+            ],
+            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+              'bullist numlist outdent indent | link image | print preview media fullscreen | ',
+            images_upload_url: '/Editor/TinyMceUpload'
+        });
+    </script>
+}

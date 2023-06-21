@@ -1,0 +1,62 @@
+@model UserInputModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<main class="">
+    <div class="container mb-5">
+        <div class="row justify-content-center align-items-center vh-100 py-5">
+            <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+                <div class="card card-body rounded-3 p-4 p-sm-5">
+                    <div class="text-center">
+                        <h1 class="mb-2">Sign up</h1>
+                        <span class="d-block">Already have an account? <a asp-controller="Account" asp-action="Login">Sign in here</a></span>
+                    </div>
+            
+                    <form class="mt-4" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="UserName" class="form-control" placeholder="Enter User Name" aria-required="true" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="FullName" class="form-control" placeholder="Enter Full Name" aria-required="true" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="Email" class="form-control" placeholder="Enter Email" aria-required="true" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="AvatarImageUpload" class="form-control" placeholder="Upload profile photo" type="file" accept="image/png, image/jpeg" />
+                            <span asp-validation-for="AvatarImageUpload" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="CoverImageUpload" class="form-control" placeholder="Upload cover photo" type="file" accept="image/png, image/jpeg" />
+                            <span asp-validation-for="CoverImageUpload" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="Password" class="form-control" placeholder="Enter Password" aria-required="true" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 input-group-lg">
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" aria-required="true" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-lg btn-primary">Sign me up</button>
+                        </div>
+            
+                        <p class="mb-0 mt-3 text-center">
+                            &copy;2023 <a target="_blank" href="#">Noah Community Action Network.</a> All rights reserved
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

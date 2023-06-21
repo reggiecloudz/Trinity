@@ -1,0 +1,23 @@
+@model EventDetailsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Event!.Name} Details";
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                @await Html.PartialAsync("Projects/_ProjectNav", Model.Project)
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("Events/_EventTabs", Model.Event)
+            </div>
+        </div>
+    </div>
+</main>
+
+@await Component.InvokeAsync("SendInvitation", new { projectId = Model.Project!.Id, eventId = Model.Event.Id })

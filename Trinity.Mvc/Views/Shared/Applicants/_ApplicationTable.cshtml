@@ -1,0 +1,59 @@
+@model IEnumerable<Applicant>
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">Applications</h1>
+        <!-- Button modal -->
+        <a class="btn btn-complementary-soft" href="#">
+            <i class="fa-solid fa-compass pe-1"></i> All Positions
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td scope="row">@item.Position!.Title</td>
+                            <td>@item.Position.Project!.Name</td>
+                            <td>@item.Status</td>
+                            <td>
+                                <div class="dropdown">
+                                    <!-- Card share action menu -->
+                                    <button class="icon-sm btn btn-complementary-soft btn-sm" type="button" id="profileAction2" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <!-- Card share action dropdown menu -->
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="bi bi-info-circle-fill fa-fw pe-2"></i>
+                                                Details
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="bi bi-trash fa-fw pe-2"></i>
+                                                Withdraw
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

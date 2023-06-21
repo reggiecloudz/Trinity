@@ -1,0 +1,97 @@
+@model Event
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">@Model.Name</h1>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a class="btn btn-complementary-soft" href="#"> 
+                <i class="fa-solid fa-compass"></i>
+            </a>
+            <button type="button" class="btn btn-complementary-soft" data-bs-toggle="modal" data-bs-target="#sendInvitationModal">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Details </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Attendees </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> Invitations </a> </li>
+        </ul>
+
+        <div class="tab-content mb-0 pb-0">
+            <div class="tab-pane fade show active" id="tab-1">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <span class="small text-secondary">
+                            Location: @Model.Location
+                        </span>
+                        <span class="px-2">&middot;</span>
+                        <span class="small text-secondary">
+                            Start: @Model.Start.ToString("MMM d, yyyy HH:mm tt")
+                        </span>
+                        <span class="px-2">&middot;</span>
+                        <span class="small text-secondary">
+                            End: @Model.End.ToString("MMM d, yyyy HH:mm tt")
+                        </span>
+                        <span class="px-2">&middot;</span>
+                        @if (Model.IsPublic)
+                        {
+                            <span class="small text-secondary">Open to: Public</span>
+                        }
+                        else
+                        {
+                            <span class="small text-secondary">Open to: Supporters</span>
+                        }
+                    </div>
+                    <div class="col-12">
+                        <p class="lead">Details</p>
+                        <p>
+                            @Model.Details
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-2">
+                <div class="row g-4">
+                    @foreach (var item in Model.Attendees)
+                    {
+                        <div class="col-12">
+                            <div class="hstack gap-2 mb-3">
+                                <!-- Avatar -->
+                                <div class="avatar">
+                                    <a href="#!"><img class="avatar-img rounded-circle" src="~/media/members/@(item.Attendee!.AvatarImage)" alt=""></a>
+                                </div>
+                                <!-- Title -->
+                                <div class="overflow-hidden">
+                                    <a class="h6 mb-0" href="#!">@item.Attendee!.FullName </a>
+                                    <p class="mb-0 small text-truncate">@item.Attendee!.Occupation</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+             <div class="tab-pane fade" id="tab-3">
+                <div class="row g-4">
+                    @foreach (var item in Model.Invitations)
+                    {
+                        <div class="col-12">
+                            <div class="hstack gap-2 mb-3">
+                                <!-- Avatar -->
+                                <div class="avatar">
+                                    <a href="#!"><img class="avatar-img rounded-circle" src="~/media/members/@(item.Member!.AvatarImage)" alt=""></a>
+                                </div>
+                                <!-- Title -->
+                                <div class="overflow-hidden">
+                                    <a class="h6 mb-0" href="#!">@item.Member!.FullName </a>
+                                    <p class="mb-0 small text-truncate">@item.Acceptance</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <partial name="Members/_MemberNav" />
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                <partial name="Members/_ConnectionTabs" />
+            </div>
+        </div>
+    </div>
+</main>

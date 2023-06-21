@@ -1,0 +1,110 @@
+@model Position
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">@Model.Title</h1>
+        <a class="btn btn-complementary-soft" href="#"> 
+            <i class="fa-solid fa-compass pe-1"></i> All positions
+        </a>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Details </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Applicants </a> </li>
+        </ul>
+
+        <div class="tab-content mb-0 pb-0">
+            <div class="tab-pane fade show active" id="tab-1">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <a class="small text-secondary" href="#!">
+                            Posted: @Model.Created.ToString("MMM d, yyyy")
+                        </a>
+                        <span class="px-2">&middot;</span>
+                        <a class="small text-secondary" href="#!">
+                            Positions Available: @Model.PeopleNeeded
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <p class="lead">Job description</p>
+                        <p>
+                            @Model.Details
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-2">
+                @foreach (var item in Model.Applicants)
+                {
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="#!"> <img class="avatar-img rounded-circle" src="~/media/members/@item.User!.AvatarImage" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                                <h6 class="mb-0">
+                                    <a href="#!">@item.User.FullName </a>
+                                    <br/>
+                                    <span class="mt-2 mb-0 badge bg-primary">@item.Status</span>
+                                </h6>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="dropdown">
+                            <!-- Card share action menu -->
+                            <button class="icon-md btn btn-primary-soft btn-block w-100" type="button" id="profileAction2" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <!-- Card share action dropdown menu -->
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-info-circle-fill fa-fw pe-2"></i>
+                                        Details
+                                    </a>
+                                </li>
+                                @if (item.Status == "Selected")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-dash-circle-fill fa-fw pe-2"></i>
+                                            Unselect
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Applicants" asp-action="Select" asp-route-id="@item.Id">
+                                            <i class="bi bi-plus-circle-fill fa-fw pe-2"></i>
+                                            Select
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-x-circle-fill fa-fw pe-2"></i>
+                                            Don't Select
+                                        </a>
+                                    </li>
+                                }
+                                
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-chat-left-dots-fill fa-fw pe-2"></i>
+                                        Message
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

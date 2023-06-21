@@ -1,0 +1,58 @@
+@model IEnumerable<Position>
+
+<div class="card">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h4 class="card-title"> Positions</h4>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-6 col-sm-12">
+                    <div class="card mb-3 bg-transparent">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col">
+                                    <h5>
+                                        <a href="#" class="btn-link text-reset fw-bold">
+                                            @item.Title
+                                        </a>
+                                    </h5>
+                                    <div class="d-none d-sm-inline-block">
+                                        
+                                            @if (item.Details.Length > 100)
+                                            {
+                                                <p class="mb-2">@item.Details.Substring(0, 100) ...</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="mb-2">@item.Details</p>
+                                            }
+                                        
+                                    </div>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <span class="small text-secondary"> 
+                                                <i class="bi bi-calendar-date pe-1"></i> 
+                                                Posted on: @item.Created.ToString("MMM d, yyyy")
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span class="small text-secondary">
+                                                <i class="bi bi-people pe-1"></i> 
+                                                Positions Avaliable: @item.PeopleNeeded
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <div class="">
+                                        <a asp-controller="Positions" asp-action="Information" asp-route-id="@item.Id" class="btn btn-primary w-100 btn-block">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
