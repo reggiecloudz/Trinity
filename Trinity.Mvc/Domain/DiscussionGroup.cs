@@ -30,6 +30,10 @@ namespace Trinity.Mvc.Domain
         public string ModeratorId { get; set; } = string.Empty;
         public virtual ApplicationUser? Moderator { get; set; }
 
+        public long CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
+
+        public virtual ICollection<Topic> Topics { get; set; } = new List<Topic>();
         public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
         public virtual ICollection<Subscription> Subscribers { get; set; } = new List<Subscription>();
     }

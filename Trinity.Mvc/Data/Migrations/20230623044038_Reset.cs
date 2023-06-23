@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Trinity.Mvc.Data.Migrations
 {
-    public partial class First : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,6 +59,23 @@ namespace Trinity.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Slug = table.Column<string>(type: "longtext", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Causes",
                 columns: table => new
                 {
@@ -94,23 +111,6 @@ namespace Trinity.Mvc.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Topics",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Slug = table.Column<string>(type: "longtext", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -284,25 +284,28 @@ namespace Trinity.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DiscussionGroups",
+                name: "Follows",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Slug = table.Column<string>(type: "longtext", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false),
-                    Photo = table.Column<string>(type: "longtext", nullable: false),
-                    ModeratorId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    FollowerId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    FollowingId = table.Column<string>(type: "varchar(255)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiscussionGroups", x => x.Id);
+                    table.PrimaryKey("PK_Follows", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DiscussionGroups_AspNetUsers_ModeratorId",
-                        column: x => x.ModeratorId,
+                        name: "FK_Follows_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Follows_AspNetUsers_FollowingId",
+                        column: x => x.FollowingId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -331,6 +334,39 @@ namespace Trinity.Mvc.Data.Migrations
                         name: "FK_WorkExperiences_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "DiscussionGroups",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Slug = table.Column<string>(type: "longtext", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    Photo = table.Column<string>(type: "longtext", nullable: false),
+                    ModeratorId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscussionGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DiscussionGroups_AspNetUsers_ModeratorId",
+                        column: x => x.ModeratorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiscussionGroups_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -398,45 +434,6 @@ namespace Trinity.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Slug = table.Column<string>(type: "longtext", nullable: false),
-                    Subject = table.Column<string>(type: "longtext", nullable: false),
-                    Body = table.Column<string>(type: "longtext", nullable: false),
-                    TopicId = table.Column<long>(type: "bigint", nullable: false),
-                    DiscussionGroupId = table.Column<long>(type: "bigint", nullable: false),
-                    AuthorId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Posts_DiscussionGroups_DiscussionGroupId",
-                        column: x => x.DiscussionGroupId,
-                        principalTable: "DiscussionGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Posts_Topics_TopicId",
-                        column: x => x.TopicId,
-                        principalTable: "Topics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Subscriptions",
                 columns: table => new
                 {
@@ -456,6 +453,30 @@ namespace Trinity.Mvc.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Subscriptions_DiscussionGroups_DiscussionGroupId",
+                        column: x => x.DiscussionGroupId,
+                        principalTable: "DiscussionGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Topics",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Slug = table.Column<string>(type: "longtext", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    DiscussionGroupId = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Topics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Topics_DiscussionGroups_DiscussionGroupId",
                         column: x => x.DiscussionGroupId,
                         principalTable: "DiscussionGroups",
                         principalColumn: "Id",
@@ -497,6 +518,7 @@ namespace Trinity.Mvc.Data.Migrations
                     Location = table.Column<string>(type: "longtext", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     End = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -598,7 +620,7 @@ namespace Trinity.Mvc.Data.Migrations
                 columns: table => new
                 {
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    SupportId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    SupporterId = table.Column<string>(type: "varchar(255)", nullable: false),
                     ProjectRole = table.Column<string>(type: "longtext", nullable: false),
                     Position = table.Column<string>(type: "longtext", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -606,10 +628,10 @@ namespace Trinity.Mvc.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectSupporters", x => new { x.ProjectId, x.SupportId });
+                    table.PrimaryKey("PK_ProjectSupporters", x => new { x.ProjectId, x.SupporterId });
                     table.ForeignKey(
-                        name: "FK_ProjectSupporters_AspNetUsers_SupportId",
-                        column: x => x.SupportId,
+                        name: "FK_ProjectSupporters_AspNetUsers_SupporterId",
+                        column: x => x.SupporterId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -651,65 +673,41 @@ namespace Trinity.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Likes",
-                columns: table => new
-                {
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Likes", x => new { x.PostId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_Likes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Likes_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Replies",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<string>(type: "longtext", nullable: false),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true),
+                    Slug = table.Column<string>(type: "longtext", nullable: false),
+                    Subject = table.Column<string>(type: "longtext", nullable: false),
+                    Body = table.Column<string>(type: "longtext", nullable: false),
+                    TopicId = table.Column<long>(type: "bigint", nullable: false),
+                    DiscussionGroupId = table.Column<long>(type: "bigint", nullable: false),
                     AuthorId = table.Column<string>(type: "varchar(255)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Replies", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Replies_AspNetUsers_AuthorId",
+                        name: "FK_Posts_AspNetUsers_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Replies_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
+                        name: "FK_Posts_DiscussionGroups_DiscussionGroupId",
+                        column: x => x.DiscussionGroupId,
+                        principalTable: "DiscussionGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Replies_Replies_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Replies",
-                        principalColumn: "Id");
+                        name: "FK_Posts_Topics_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "Topics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -769,7 +767,7 @@ namespace Trinity.Mvc.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Acceptance = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Acceptance = table.Column<string>(type: "longtext", nullable: false),
                     Message = table.Column<string>(type: "longtext", nullable: false),
                     EventId = table.Column<long>(type: "bigint", nullable: false),
                     MemberId = table.Column<string>(type: "varchar(255)", nullable: false),
@@ -886,6 +884,69 @@ namespace Trinity.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => new { x.PostId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_Likes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Likes_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Replies",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Content = table.Column<string>(type: "longtext", nullable: false),
+                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    ParentId = table.Column<long>(type: "bigint", nullable: true),
+                    AuthorId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Replies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Replies_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Replies_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Replies_Replies_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Replies",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Votes",
                 columns: table => new
                 {
@@ -991,10 +1052,14 @@ namespace Trinity.Mvc.Data.Migrations
                 column: "ConnectorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DiscussionGroups_CategoryId",
+                table: "DiscussionGroups",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DiscussionGroups_ModeratorId",
                 table: "DiscussionGroups",
-                column: "ModeratorId",
-                unique: true);
+                column: "ModeratorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Donations_DonorId",
@@ -1025,6 +1090,16 @@ namespace Trinity.Mvc.Data.Migrations
                 name: "IX_Expenditures_ProjectId",
                 table: "Expenditures",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowerId",
+                table: "Follows",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowingId",
+                table: "Follows",
+                column: "FollowingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fundraisers_ProjectId",
@@ -1088,9 +1163,9 @@ namespace Trinity.Mvc.Data.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectSupporters_SupportId",
+                name: "IX_ProjectSupporters_SupporterId",
                 table: "ProjectSupporters",
-                column: "SupportId");
+                column: "SupporterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Proposals_ProjectId",
@@ -1117,6 +1192,11 @@ namespace Trinity.Mvc.Data.Migrations
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_DiscussionGroupId",
+                table: "Topics",
+                column: "DiscussionGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserNotifications_NotificationId",
@@ -1168,6 +1248,9 @@ namespace Trinity.Mvc.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Expenditures");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "Invitations");
@@ -1230,13 +1313,16 @@ namespace Trinity.Mvc.Data.Migrations
                 name: "Causes");
 
             migrationBuilder.DropTable(
-                name: "DiscussionGroups");
-
-            migrationBuilder.DropTable(
                 name: "Topics");
 
             migrationBuilder.DropTable(
+                name: "DiscussionGroups");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

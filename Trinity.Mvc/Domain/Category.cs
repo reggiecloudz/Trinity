@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Trinity.Mvc.Domain
 {
-    public class Topic : Entity
+    public class Category : Entity
     {
         public long Id { get; set; }
 
@@ -13,9 +13,6 @@ namespace Trinity.Mvc.Domain
 
         public string Name { get; set; } = string.Empty;
 
-        public long DiscussionGroupId { get; set; }
-        public virtual DiscussionGroup? DiscussionGroup { get; set; }
-
-        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+        public virtual ICollection<DiscussionGroup> DiscussionGroups { get; set; } = new List<DiscussionGroup>();
     }
 }

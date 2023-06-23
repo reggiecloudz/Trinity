@@ -88,16 +88,9 @@ namespace Trinity.Mvc.Controllers
         public async Task<IActionResult> DiscussionGroup(string id)
         {
             ApplicationUser user = await _context.Users
-                .Include(m => m.DiscussionGroup)
-                    .ThenInclude(d => d.Posts)
-                        .ThenInclude(p => p.Replies)
                 .FirstOrDefaultAsync(u => u.Id == id);
             
-            if (user.DiscussionGroup != null)
-            {
-                ViewData["DiscussionGroupId"] = user.DiscussionGroup.Id;
-            } 
-            ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Name");
+            // ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Name");
                 
             return View(user);
         }

@@ -21,6 +21,8 @@ namespace Trinity.Mvc.Data
         public DbSet<Position> Positions { get; set; } 
         public DbSet<JobRequirement> JobRequirements { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<Follow> Follows { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<DiscussionGroup> DiscussionGroups { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Topic> Topics { get; set; }

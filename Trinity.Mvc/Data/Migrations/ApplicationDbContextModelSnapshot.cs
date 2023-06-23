@@ -286,6 +286,31 @@ namespace Trinity.Mvc.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Category", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Cause", b =>
                 {
                     b.Property<long>("Id")
@@ -380,6 +405,9 @@ namespace Trinity.Mvc.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
@@ -408,8 +436,9 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModeratorId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ModeratorId");
 
                     b.ToTable("DiscussionGroups");
                 });
@@ -559,6 +588,35 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Expenditures");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Follow", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("FollowingId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Fundraiser", b =>
@@ -1007,6 +1065,9 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<long>("DiscussionGroupId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -1019,6 +1080,8 @@ namespace Trinity.Mvc.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DiscussionGroupId");
 
                     b.ToTable("Topics");
                 });
@@ -1239,11 +1302,19 @@ namespace Trinity.Mvc.Data.Migrations
 
             modelBuilder.Entity("Trinity.Mvc.Domain.DiscussionGroup", b =>
                 {
-                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Moderator")
-                        .WithOne("DiscussionGroup")
-                        .HasForeignKey("Trinity.Mvc.Domain.DiscussionGroup", "ModeratorId")
+                    b.HasOne("Trinity.Mvc.Domain.Category", "Category")
+                        .WithMany("DiscussionGroups")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Moderator")
+                        .WithMany("Discussions")
+                        .HasForeignKey("ModeratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("Moderator");
                 });
@@ -1310,6 +1381,25 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Follow", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Following")
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Fundraiser", b =>
@@ -1512,6 +1602,17 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Topic", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.DiscussionGroup", "DiscussionGroup")
+                        .WithMany("Topics")
+                        .HasForeignKey("DiscussionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DiscussionGroup");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.UserNotification", b =>
                 {
                     b.HasOne("Trinity.Mvc.Domain.Notification", "Notification")
@@ -1570,7 +1671,7 @@ namespace Trinity.Mvc.Data.Migrations
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("DiscussionGroup");
+                    b.Navigation("Discussions");
 
                     b.Navigation("Donations");
 
@@ -1597,6 +1698,11 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("WorkExperiences");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Category", b =>
+                {
+                    b.Navigation("DiscussionGroups");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Cause", b =>
                 {
                     b.Navigation("Children");
@@ -1609,6 +1715,8 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Subscribers");
+
+                    b.Navigation("Topics");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Event", b =>

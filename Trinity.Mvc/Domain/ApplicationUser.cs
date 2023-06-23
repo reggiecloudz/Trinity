@@ -26,8 +26,7 @@ namespace Trinity.Mvc.Domain
 
         public string Occupation { get; set; } = "Not Provided";
 
-        public virtual DiscussionGroup? DiscussionGroup { get; set; }
-
+        public virtual ICollection<DiscussionGroup> Discussions { get; set; } = new List<DiscussionGroup>();
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<ProjectSupporter> ProjectsSupported { get; set; } = new List<ProjectSupporter>();
         public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
