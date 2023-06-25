@@ -21,12 +21,6 @@ namespace Trinity.Mvc.Domain
         [DataType(DataType.Text)]
         public string Description { get; set; } = string.Empty;
 
-        public string Photo { get; set; } = "noimage.png";
-
-        [NotMapped]
-        [FileExtension]
-        public IFormFile? PhotoUpload { get; set; }
-
         public string ModeratorId { get; set; } = string.Empty;
         public virtual ApplicationUser? Moderator { get; set; }
 

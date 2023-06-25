@@ -44,18 +44,12 @@ namespace Trinity.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/members");
-                string avatarImageName = Guid.NewGuid().ToString() + "_" + user.AvatarImageUpload!.FileName;
-                string coverImageName = Guid.NewGuid().ToString() + "_" + user.CoverImageUpload!.FileName;
-                string avatarFilePath = Path.Combine(uploadsDir, avatarImageName);
-                string coverFilePath = Path.Combine(uploadsDir, coverImageName);
+                string imageName = Guid.NewGuid().ToString() + "_" + user.ProfileImageUpload!.FileName;
+                string filePath = Path.Combine(uploadsDir, imageName);
                 
-                FileStream afs = new FileStream(avatarFilePath, FileMode.Create);
-                await user.AvatarImageUpload.CopyToAsync(afs);
-                afs.Close();
-
-                FileStream cfs = new FileStream(coverFilePath, FileMode.Create);
-                await user.CoverImageUpload.CopyToAsync(cfs);
-                cfs.Close();
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                await user.ProfileImageUpload.CopyToAsync(fs);
+                fs.Close();
 
                 ApplicationUser newUser = new ApplicationUser 
                 { 
@@ -63,8 +57,7 @@ namespace Trinity.Mvc.Controllers
                     FullName = user.FullName,
                     UserName = user.UserName, 
                     Email = user.Email,
-                    AvatarImage = avatarImageName,
-                    CoverImage = coverImageName
+                    ProfileImage = imageName
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);

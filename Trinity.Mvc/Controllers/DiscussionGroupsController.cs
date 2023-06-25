@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Infrastructure.Helpers;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -31,7 +32,7 @@ namespace Trinity.Mvc.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: DiscussionGroups/Details/5
+        [Route("/[controller]/{id}/Details")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.DiscussionGroups == null)
@@ -41,12 +42,19 @@ namespace Trinity.Mvc.Controllers
 
             var discussionGroup = await _context.DiscussionGroups
                 .Include(d => d.Moderator)
+                .Include(d => d.Category)
+                .Include(d => d.Topics)
+                .Include(d => d.Posts)
+                    .ThenInclude(p => p.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (discussionGroup == null)
             {
                 return NotFound();
             }
-
+            ViewData["DiscussionGroupId"] = discussionGroup.Id;
+            ViewData["TopicId"] = new SelectList(
+                _context.Topics.Where(t => t.DiscussionGroupId == discussionGroup.Id).ToList(), "Id", "Name");
             return View(discussionGroup);
         }
 
@@ -62,25 +70,18 @@ namespace Trinity.Mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,PhotoUpload")] DiscussionGroup discussionGroup)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryId")] DiscussionGroup discussionGroup)
         {
             if (ModelState.IsValid)
             {
-                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/discussions");
-                string photoName = Guid.NewGuid().ToString() + "_" + discussionGroup.PhotoUpload!.FileName;
-                string photoFilePath = Path.Combine(uploadsDir, photoName);
-                FileStream fs = new FileStream(photoFilePath, FileMode.Create);
-                await discussionGroup.PhotoUpload.CopyToAsync(fs);
-                fs.Close();
-                discussionGroup.Photo = photoName;
-                discussionGroup.Slug = discussionGroup.Name.ToLower().Replace("'", "").Replace(" ", "-");
+                discussionGroup.Slug = FriendlyUrlHelper.GetFriendlyTitle(discussionGroup.Name);
                 discussionGroup.ModeratorId = HttpContext.User.FindFirst("UserId")!.Value;
                 _context.Add(discussionGroup);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(MembersController.DiscussionGroup), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
+                return RedirectToAction(nameof(MembersController.Discussions), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
             }
-            ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", discussionGroup.ModeratorId);
-            return View(discussionGroup);
+            
+            return RedirectToAction(nameof(MembersController.Discussions), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
         }
 
         // GET: DiscussionGroups/Edit/5
@@ -97,6 +98,8 @@ namespace Trinity.Mvc.Controllers
                 return NotFound();
             }
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", discussionGroup.ModeratorId);
+            ViewData["TopicId"] = new SelectList(
+                _context.Topics.Where(t => t.DiscussionGroupId == discussionGroup.Id).ToList(), "Id", "Name");
             return View(discussionGroup);
         }
 

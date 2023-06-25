@@ -30,7 +30,7 @@ namespace Trinity.Mvc.Data
             identity.AddClaim(new Claim("FullName", user.FullName));
             identity.AddClaim(new Claim("ShortName", user.FullName.Split(" ")[0]));
             identity.AddClaim(new Claim("Occupation", user.Occupation));
-            identity.AddClaim(new Claim("ProfileImage", user.AvatarImage));
+            identity.AddClaim(new Claim("ProfileImage", user.ProfileImage));
             identity.AddClaim(new Claim("UserId", user.Id));
             
             return identity;

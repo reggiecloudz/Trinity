@@ -64,15 +64,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="DiscussionGroup" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
-                                <i class="fa-solid fa-message me-2"></i>
-                                Discussion Group
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Discussions" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-quote-left me-2"></i>
+                                Discussions
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="DiscussionGroup" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Subscriptions" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
                                 <i class="fa-solid fa-comments me-2"></i>
-                                Discussions
+                                Subscriptions
                             </a>
                         </li>
                     </ul>

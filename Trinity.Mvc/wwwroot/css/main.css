@@ -173,6 +173,10 @@ a.nav-link.text-light-emphasis:hover {
     border-color: var(--san-marino) !important;
 }
 
+.text-complementary {
+    color: var(--complementary) !important;
+}
+
 .btn-cta {
     background-color: var(--cta) !important;
     color: var(--pearl) !important;

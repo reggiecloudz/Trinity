@@ -12,17 +12,11 @@ namespace Trinity.Mvc.Domain
     {
         public string FullName { get; set; } = string.Empty;
 
-        public string AvatarImage { get; set; } = "noimage.png";
-
-        public string CoverImage { get; set; } = "noimage.png";
+        public string ProfileImage { get; set; } = "noimage.png";
 
         [NotMapped]
         [FileExtension]
-        public IFormFile? AvatarImageUpload { get; set; }
-
-        [NotMapped]
-        [FileExtension]
-        public IFormFile? CoverImageUpload { get; set; }
+        public IFormFile? ProfileImageUpload { get; set; }
 
         public string Occupation { get; set; } = "Not Provided";
 

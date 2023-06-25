@@ -7,6 +7,8 @@ namespace Trinity.Mvc.Domain
 {
     public class Topic : Entity
     {
+        public Topic() {}
+        
         public long Id { get; set; }
 
         public string Slug { get; set; } = string.Empty;

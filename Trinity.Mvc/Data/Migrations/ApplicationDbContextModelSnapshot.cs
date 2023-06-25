@@ -214,16 +214,8 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("AvatarImage")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CoverImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -263,6 +255,10 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ProfileImage")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
@@ -420,10 +416,6 @@ namespace Trinity.Mvc.Data.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Photo")
                         .IsRequired()
                         .HasColumnType("longtext");
 

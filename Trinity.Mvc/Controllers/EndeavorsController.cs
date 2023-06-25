@@ -10,7 +10,7 @@ using Trinity.Mvc.Data;
 
 namespace Trinity.Mvc.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class EndeavorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ namespace Trinity.Mvc.Controllers
             _logger = logger;
         }
 
-        [Route("/[controller]/{slug}")]
+        [Route("{slug}")]
         public async Task<ActionResult> Profile(string slug)
         {
             if (slug == null || _context.Projects == null)
@@ -45,7 +45,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{slug}/Expenditures")]
+        [Route("{slug}/Expenditures")]
         public async Task<ActionResult> Expenditures(string slug)
         {
             if (slug == null || _context.Projects == null)
@@ -67,7 +67,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{slug}/Positions")]
+        [Route("{slug}/Positions")]
         public async Task<ActionResult> Positions(string slug)
         {
             if (slug == null || _context.Projects == null)
@@ -89,7 +89,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{slug}/Events")]
+        [Route("{slug}/Events")]
         public async Task<ActionResult> Events(string slug)
         {
             if (slug == null || _context.Projects == null)
@@ -111,7 +111,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{slug}/Supporters")]
+        [Route("{slug}/Supporters")]
         public async Task<ActionResult> Supporters(string slug)
         {
             if (slug == null || _context.Projects == null)
@@ -133,7 +133,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{slug}/Media")]
+        [Route("{slug}/Media")]
         public async Task<ActionResult> Media(string slug)
         {
             if (slug == null || _context.Projects == null)

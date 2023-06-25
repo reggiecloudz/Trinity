@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Infrastructure.Helpers;
 
 namespace Trinity.Mvc.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,13 +24,60 @@ namespace Trinity.Mvc.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            string cause,
+            int? pageNumber)
         {
-            var applicationDbContext = _context.Projects.Include(p => p.Cause).Include(p => p.Manager);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var projects = from p in _context.Projects.Include(p => p.Cause).Include(p => p.Manager) select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                projects = projects.Where(p => p.Name.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(cause))
+            {
+                projects = projects.Where(p => p.Cause!.Slug == cause);
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    projects = projects.OrderByDescending(p => p.Name);
+                    break;
+                case "Date":
+                    projects = projects.OrderBy(p => p.Created);
+                    break;
+                case "date_desc":
+                    projects = projects.OrderByDescending(p => p.Created);
+                    break;
+                default:
+                    projects = projects.OrderBy(p => p.Name);
+                    break;
+            }
+            int pageSize = 12;
+            return View(await PaginatedList<Project>.CreateAsync(projects.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        [Route("/[controller]/{id}/Details")]
+        [Route("{id}/Details")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.Projects == null)
@@ -53,16 +101,10 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        // GET: Projects/Create
-        public IActionResult Create()
-        {
-            ViewData["CauseId"] = new SelectList(_context.Causes, "Id", "Id");
-            return View();
-        }
-
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,PhotoUpload,CauseId")] Project project)
@@ -76,7 +118,7 @@ namespace Trinity.Mvc.Controllers
                 await project.PhotoUpload.CopyToAsync(fs);
                 fs.Close();
                 project.Photo = photoName;
-                project.Slug = project.Name.ToLower().Replace("'", "").Replace(" ", "-");
+                project.Slug = FriendlyUrlHelper.GetFriendlyTitle(project.Name);
                 project.ManagerId = HttpContext.User.FindFirst("UserId")!.Value;
                 _context.Add(project);
                 await _context.SaveChangesAsync();
@@ -97,7 +139,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        // GET: Projects/Edit/5
+        [Route("{id}/Edit")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null || _context.Projects == null)
@@ -115,9 +157,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        // POST: Projects/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("{id}/Edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Slug,Name,Photo,Closed,Published,CauseId,ManagerId")] Project project)
@@ -152,7 +192,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        // GET: Projects/Delete/5
+        [Route("{id}/Delete")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _context.Projects == null)
@@ -172,7 +212,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        // POST: Projects/Delete/5
+        [Route("{id}/Delete")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -191,7 +231,7 @@ namespace Trinity.Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Route("/[controller]/{id}/Expenditures")]
+        [Route("{id}/Expenditures")]
         public async Task<ActionResult> Expenditures(long? id)
         {
             if (id == null || _context.Projects == null)
@@ -213,7 +253,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{id}/Positions")]
+        [Route("{id}/Positions")]
         public async Task<ActionResult> Positions(long? id)
         {
             if (id == null || _context.Projects == null)
@@ -236,7 +276,7 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("/[controller]/{id}/Events")]
+        [Route("{id}/Events")]
         public async Task<ActionResult> Events(long? id)
         {
             if (id == null || _context.Projects == null)

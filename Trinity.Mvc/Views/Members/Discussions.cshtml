@@ -1,5 +1,4 @@
 @model ApplicationUser
-
 @{
     ViewData["Title"] = $"{Model.FullName} Discussions";
 }
@@ -14,8 +13,29 @@
             </div>
 
             <div class="col-lg-9 vstack gap-4">
-                @await Html.PartialAsync("Discussions/_DiscussionsTabs", Model.Subscriptions)
+                @await Html.PartialAsync("DiscussionGroups/_DiscussionsTable", Model.Discussions)
             </div>
         </div>
     </div>
 </main>
+
+<vc:save-discussion-group></vc:save-discussion-group>
+
+@section Scripts {
+    <script src="~/lib/tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#Body',
+            height: 300,
+            promotion: false,
+            plugins: [
+                'advlist', 'autolink', 'link', 'image', 'lists', 'preview', 'anchor', 'pagebreak',
+                'searchreplace', 'wordcount', 'code', 'fullscreen', 'insertdatetime',
+                'media', 'table'
+            ],
+            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+              'bullist numlist outdent indent | link image | print preview media fullscreen | ',
+            images_upload_url: '/Editor/TinyMceUpload'
+        });
+    </script>
+}

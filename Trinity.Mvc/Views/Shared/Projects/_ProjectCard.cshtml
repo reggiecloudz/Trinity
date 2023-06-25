@@ -5,9 +5,9 @@
         <img class="img-fluid rounded-top" src="~/media/projects/@Model.Photo" alt="">
     </div>
     <div class="card-body position-relative pt-0">
-        <a class="btn btn-xs btn-primary mt-n3" href="#">@Model.Cause!.Name </a>
+        <a class="btn btn-xs btn-primary mt-n3" asp-controller="Projects" asp-action="Index" asp-route-cause="@Model.Cause.Slug">@Model.Cause!.Name </a>
         <h4 class="mt-3">
-            <a href="#">
+            <a asp-controller="Endeavors" asp-action="Profile" asp-route-slug="@Model.Slug">
                 @Model.Name
             </a>
         </h4>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Infrastructure.Helpers;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -38,6 +39,9 @@ namespace Trinity.Mvc.Controllers
             }
 
             var topic = await _context.Topics
+                .Include(t => t.Posts)
+                .Include(t => t.DiscussionGroup)
+                    .ThenInclude(d => d!.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (topic == null)
             {
@@ -58,16 +62,16 @@ namespace Trinity.Mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Id,Name,DiscussionGroupId")] Topic topic)
         {
             if (ModelState.IsValid)
             {
-                topic.Slug = topic.Name.ToLower().Replace("'", "").Replace(" ", "-");
+                topic.Slug = FriendlyUrlHelper.GetFriendlyTitle(topic.Name);
                 _context.Add(topic);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DiscussionGroupsController.Details), "DiscussionGroups", new { id = topic.DiscussionGroupId });
             }
-            return View(topic);
+            return RedirectToAction(nameof(MembersController.Discussions), "Members", new { id = HttpContext.User.FindFirst("UserId") });
         }
 
         // GET: Topics/Edit/5

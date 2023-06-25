@@ -1,25 +1,39 @@
 @model Post
 
-<form method="post" asp-controller="Posts" asp-action="Create" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group mb-3">
-        <label asp-for="Subject" class="control-label"></label>
-        <input asp-for="Subject" class="form-control" />
-        <span asp-validation-for="Subject" class="text-danger"></span>
+<div class="modal fade" id="savePostModal" tabindex="-1" aria-labelledby="savePostLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="savePostLabel">Save Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form" method="post" asp-controller="Posts" asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Subject" class="control-label"></label>
+                        <input asp-for="Subject" class="form-control" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="TopicId" class="control-label"></label>
+                        <select asp-for="TopicId" class ="form-select" asp-items="ViewBag.TopicId"></select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Body" class="control-label"></label>
+                        <textarea asp-for="Body" id="Body" class="form-control"></textarea>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="DiscussionGroupId" class ="form-control" value="@ViewBag.DiscussionGroupId"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="post-form" class="btn btn-primary">Save now</button>
+                <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
     </div>
-    <div class="form-group mb-3">
-        <label asp-for="TopicId" class="control-label"></label>
-        <select asp-for="TopicId" class ="form-select" asp-items="ViewBag.TopicId"></select>
-    </div>
-    <div class="form-group mb-3">
-        <label asp-for="Body" class="control-label"></label>
-        <textarea asp-for="Body" id="Body" class="form-control"></textarea>
-        <span asp-validation-for="Body" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="hidden" asp-for="DiscussionGroupId" class ="form-control" value="@ViewBag.DiscussionGroupId"></select>
-    </div>
-    <div class="form-group my-3">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-</form>
+</div>

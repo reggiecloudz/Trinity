@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Trinity.Mvc.Data.Migrations
 {
-    public partial class Reset : Migration
+    public partial class Start : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,8 +34,7 @@ namespace Trinity.Mvc.Data.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false),
                     FullName = table.Column<string>(type: "longtext", nullable: false),
-                    AvatarImage = table.Column<string>(type: "longtext", nullable: false),
-                    CoverImage = table.Column<string>(type: "longtext", nullable: false),
+                    ProfileImage = table.Column<string>(type: "longtext", nullable: false),
                     Occupation = table.Column<string>(type: "longtext", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -348,7 +347,6 @@ namespace Trinity.Mvc.Data.Migrations
                     Slug = table.Column<string>(type: "longtext", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: false),
-                    Photo = table.Column<string>(type: "longtext", nullable: false),
                     ModeratorId = table.Column<string>(type: "varchar(255)", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),

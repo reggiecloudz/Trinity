@@ -8,8 +8,7 @@ namespace Trinity.Mvc.Models
 {
     public class DiscussionFeedViewModel
     {
-        public ApplicationUser? User { get; set; }
-
-
+        public DiscussionGroup? DiscussionGroup { get; set; }
+        public List<Post> Posts { get; set; } = new List<Post>();
     }
 }

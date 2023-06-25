@@ -1,9 +1,26 @@
-@model Trinity.Mvc.Domain.Post
+@model Post
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = Model.Subject;
 }
 
-<h1>Details</h1>
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                @await Html.PartialAsync("Discussions/_DiscussionInfoCard", Model.DiscussionGroup)
+            </div>
+
+            <div class="col-lg-6 vstack gap-4">
+                @await Html.PartialAsync("Posts/_PostFull", Model)
+            </div>
+
+            <div class="col-lg-3">
+                <partial name="Members/_AboutMember" />
+            </div>
+        </div>
+    </div>
+</main>
 

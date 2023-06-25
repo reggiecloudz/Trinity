@@ -21,19 +21,12 @@ namespace Trinity.Mvc.Models
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
         public string FullName { get; set; } = string.Empty;
 
-        public string AvatarImage { get; set; } = "noimage.png";
-
-        public string CoverImage { get; set; } = "noimage.png";
+        public string ProfileImage { get; set; } = "noimage.png";
 
         [Required]
         [NotMapped]
         [FileExtension]
-        public IFormFile? AvatarImageUpload { get; set; }
-
-        [Required]
-        [NotMapped]
-        [FileExtension]
-        public IFormFile? CoverImageUpload { get; set; }
+        public IFormFile? ProfileImageUpload { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]

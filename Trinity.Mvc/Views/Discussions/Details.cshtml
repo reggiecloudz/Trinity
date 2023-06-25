@@ -1,0 +1,27 @@
+@model DiscussionFeedViewModel
+@{
+    ViewData["Title"] = Model.DiscussionGroup!.Name;
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                @await Html.PartialAsync("Discussions/_DiscussionInfoCard", Model.DiscussionGroup)
+            </div>
+
+            <div class="col-lg-6 vstack gap-4">
+                @foreach (var item in Model.Posts)
+                {
+                    @await Html.PartialAsync("Posts/_PostCard", item)
+                }
+            </div>
+
+            <div class="col-lg-3">
+                <partial name="Members/_AboutMember" />
+            </div>
+        </div>
+    </div>
+</main>

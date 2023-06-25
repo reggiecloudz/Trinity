@@ -84,19 +84,21 @@ namespace Trinity.Mvc.Controllers
             return View(user);
         }
 
-        [Route("/[controller]/{id}/Discussion-Group")]
-        public async Task<IActionResult> DiscussionGroup(string id)
+        [Route("/[controller]/{id}/Discussions")]
+        public async Task<IActionResult> Discussions(string id)
         {
             ApplicationUser user = await _context.Users
+                .Include(u => u.Discussions)
+                    .ThenInclude(d => d.Category)
                 .FirstOrDefaultAsync(u => u.Id == id);
-            
-            // ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Name");
-                
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+
             return View(user);
         }
 
-        [Route("/[controller]/{id}/Discussions")]
-        public async Task<IActionResult> Discussions(string id)
+        [Route("/[controller]/{id}/Subscriptions")]
+        public async Task<IActionResult> Subscriptions(string id)
         {
             ApplicationUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
                 

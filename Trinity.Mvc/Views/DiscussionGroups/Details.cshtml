@@ -1,49 +1,44 @@
-@model Trinity.Mvc.Domain.DiscussionGroup
+@model DiscussionGroup
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = $"{Model.Name} Details";
 }
 
-<h1>Details</h1>
+<partial name="_NavBar" />
 
-<div>
-    <h4>Discussion Group</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Photo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Photo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Moderator)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Moderator!.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <partial name="Members/_MemberNav" />
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("DiscussionGroups/_DiscussionsTabs", Model)
+            </div>
+        </div>
+    </div>
+</main>
+
+<vc:save-topic></vc:save-topic>
+<vc:save-post></vc:save-post>
+
+@section Scripts {
+    <script src="~/lib/tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#Body',
+            height: 250,
+            promotion: false,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'link', 'image', 'lists', 'preview', 'anchor', 'pagebreak',
+                'searchreplace', 'wordcount', 'code', 'fullscreen', 'insertdatetime',
+                'media', 'table'
+            ],
+            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+              'bullist numlist outdent indent | link image | print preview media fullscreen | ',
+            images_upload_url: '/Editor/TinyMceUpload'
+        });
+    </script>
+}

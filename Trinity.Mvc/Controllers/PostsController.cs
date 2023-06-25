@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Infrastructure.Helpers;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -30,10 +31,10 @@ namespace Trinity.Mvc.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Posts/Details/5
-        public async Task<IActionResult> Details(long? id)
+        [Route("/[controller]/{slug}")]
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null || _context.Posts == null)
+            if (slug == null || _context.Posts == null)
             {
                 return NotFound();
             }
@@ -42,7 +43,10 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.DiscussionGroup)
                 .Include(p => p.Topic)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Likes)
+                .Include(p => p.Replies)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+            
             if (post == null)
             {
                 return NotFound();
@@ -69,14 +73,14 @@ namespace Trinity.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                post.Slug = post.Subject.ToLower().Replace("'", "").Replace(" ", "-");
+                post.Slug = FriendlyUrlHelper.GetFriendlyTitle(post.Subject);
                 post.Body = HttpUtility.HtmlEncode(post.Body);
                 post.AuthorId = HttpContext.User.FindFirst("UserId")!.Value;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(MembersController.DiscussionGroup), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
+                return RedirectToAction(nameof(DiscussionGroupsController.Details), "DiscussionGroups", new { id = post.DiscussionGroupId });
             }
-            return RedirectToAction(nameof(MembersController.DiscussionGroup), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
+            return RedirectToAction(nameof(MembersController.Discussions), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
         }
 
         // GET: Posts/Edit/5

@@ -1,72 +1,83 @@
-@model IEnumerable<Trinity.Mvc.Domain.Project>
+@model PaginatedList<Project>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Projects";
 }
 
-<h1>Index</h1>
+<partial name="_NavBar" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Closed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Published)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cause)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manager)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Closed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cause!.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manager!.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<main role="main">
+    <div class="container">
+        <div class="card card-body mb-3">
+            <div class="row" id="search">
+                <form asp-controller="Projects" asp-action="Index" method="GET" id="search-form">
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search" name="SearchString" value="@ViewData["CurrentFilter"]">
+                    </div>      
+
+                    <div id="sort-filter" class="row mb-3">
+                        <div class="form-group col-6">
+                            <div>
+                                <select class="form-select" name="Cause" id="">
+                                    <option selected>Filter by cause</option>
+                                    <option value="arts-and-culture">Arts and culture</option>
+                                    <option value="environment">Environment</option>
+                                    <option value="health">Health</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <div>
+                                <select class="form-select" name="sortOrder" id="">
+                                    <option selected>Sort by...</option>
+                                    <option value="@ViewData["NameSortParm"]">Name</option>
+                                    <option value="@ViewData["DateSortParm"]">Date</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary-soft btn-block w-100" type="submit">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-3">
+                    @await Html.PartialAsync("Projects/_ProjectCard", item)
+                </div>
+            }
+        </div>
+
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="row g-4 mb-3">
+            <div class="col">
+                <div class="d-flex align-items-center justify-content-between">
+                    <a asp-action="Index"
+                        asp-route-sortOrder="@ViewData["CurrentSort"]"
+                        asp-route-pageNumber="@(Model.PageIndex - 1)"
+                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                        class="btn btn-primary @prevDisabled">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                    <a asp-action="Index"
+                        asp-route-sortOrder="@ViewData["CurrentSort"]"
+                        asp-route-pageNumber="@(Model.PageIndex + 1)"
+                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                        class="btn btn-primary @nextDisabled">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<partial name="_Footer" />
