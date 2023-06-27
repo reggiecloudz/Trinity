@@ -7,7 +7,7 @@
 {
 
     <li class="nav-item ms-2">
-        <a class="nav-link icon-md btn btn-light p-0" href="#">
+        <a class="nav-link icon-md btn btn-light p-0" asp-controller="Members" asp-action="Chats" asp-route-id="@(User.FindFirst(ClaimTypes.NameIdentifier)!.Value)">
             <i class="bi bi-chat-left-text-fill fs-6"> </i>
         </a>
     </li>

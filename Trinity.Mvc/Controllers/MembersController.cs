@@ -84,6 +84,15 @@ namespace Trinity.Mvc.Controllers
             return View(user);
         }
 
+        [Route("/[controller]/{id}/Chats")]
+        public async Task<IActionResult> Chats(string id)
+        {
+            ApplicationUser user = await _context.Users
+                .Include(u => u.Chats)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            return View(user);
+        }
+
         [Route("/[controller]/{id}/Discussions")]
         public async Task<IActionResult> Discussions(string id)
         {

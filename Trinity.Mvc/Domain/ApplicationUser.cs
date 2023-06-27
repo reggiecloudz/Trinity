@@ -34,5 +34,6 @@ namespace Trinity.Mvc.Domain
         public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
         public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
         public virtual ICollection<UserNotification> Notifications { get; set; } = new List<UserNotification>();
+        public virtual ICollection<ChatUser> Chats { get; set; } = new List<ChatUser>();
     }
 }

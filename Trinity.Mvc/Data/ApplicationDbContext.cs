@@ -42,11 +42,29 @@ namespace Trinity.Mvc.Data
         public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatUser> ChatUsers { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<ChatUser>(cuser =>
+            {
+                cuser.HasKey(cu => new { cu.UserId, cu.ChatId });
+
+                cuser.HasOne(cu => cu.Chat)
+                    .WithMany(c => c.Users)
+                    .HasForeignKey(cu => cu.ChatId)
+                    .IsRequired();
+
+                cuser.HasOne(cu => cu.User)
+                    .WithMany(u => u.Chats)
+                    .HasForeignKey(cu => cu.UserId)
+                    .IsRequired();
+            });
 
             builder.Entity<UserNotification>(notif =>
             {

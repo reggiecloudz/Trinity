@@ -23,6 +23,8 @@ namespace Trinity.Mvc.Domain
         [FileExtension]
         public IFormFile? PhotoUpload { get; set; }
 
+        public DateTime Deadline { get; set; }
+
         public bool Closed { get; set; } = false;
 
         public bool Published { get; set; } = false;

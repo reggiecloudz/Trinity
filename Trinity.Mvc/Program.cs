@@ -8,10 +8,8 @@ using Trinity.Mvc.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySQL(connectionString));
 
@@ -71,7 +69,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHub<ConnectionHub>("/connectionHub");
+    endpoints.MapHub<ChatHub>("/chatHub");
     endpoints.MapHub<NotificationHub>("/notificationHub");
 });
 

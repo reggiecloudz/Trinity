@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Users";
+}
+
+
+<partial name="_NavBar" />
+
+<main role="main">
+    <div class="container">
+        <div class="card card-body mb-3">
+            <div class="row g-4">
+                <div class="col-12">
+                    <a asp-controller="Messenging" asp-action="Private">Chats</a>
+                </div>
+                @foreach (var item in Model)
+                {
+                    <div class="col-12">
+                        <div class="hstack gap-2 mb-3">
+                            <!-- Avatar -->
+                            <div class="avatar">
+                                <a asp-controller="Messenging" asp-action="CreatePrivateRoom" asp-route-userId="@item.Id">
+                                    <img class="avatar-img rounded-circle" src="~/media/members/@(item.ProfileImage)" alt="">
+                                </a>
+                            </div>
+                            <!-- Title -->
+                            <div class="overflow-hidden">
+                                <a class="h6 mb-0" asp-controller="Messenging" asp-action="CreatePrivateRoom" asp-route-userId="@item.Id">
+                                    @item.FullName 
+                                </a>
+                                <p class="mb-0 small text-truncate">@item.UserName</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+<partial name="_Footer" />
