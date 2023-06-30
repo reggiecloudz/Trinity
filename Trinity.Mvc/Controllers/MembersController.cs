@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +65,28 @@ namespace Trinity.Mvc.Controllers
                         .ThenInclude(p => p.Project)
                 .FirstOrDefaultAsync(u => u.Id == id);
                 
+            return View(user);
+        }
+
+        [Route("/[controller]/{id}/Calendar")]
+        public async Task<IActionResult> Calendar(string id)
+        {
+            ApplicationUser user = await _context.Users
+                .Include(m => m.Events)
+                    .ThenInclude(e => e.Event)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            List<Event> events = new List<Event>();
+            foreach (var item in user.Events)
+            {
+                events.Add(item.Event);
+            }
+            var options = new JsonSerializerOptions 
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true
+            };
+
+            ViewData["Events"] = JsonSerializer.Serialize(events, options);   
             return View(user);
         }
 

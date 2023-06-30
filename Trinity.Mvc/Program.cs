@@ -42,10 +42,9 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers().AddNewtonsoftJson(opt => 
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 
     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
-builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR(configure => configure.EnableDetailedErrors = true);
 
 var app = builder.Build();

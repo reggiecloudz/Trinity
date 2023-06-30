@@ -1,0 +1,74 @@
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = $"{Model.FullName} Calendar";
+}
+
+@section Styles { 
+    <style>
+        #calendar {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+    </style>
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <partial name="Members/_MemberNav" />
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("Events/_Calendar")
+            </div>
+        </div>
+    </div>
+</main>
+
+<vc:save-event></vc:save-event>
+
+@section JavaScripts {
+    <script src="~/assets/vendor/fullcalendar/dist/index.global.min.js"></script>
+}
+
+@section Scripts {
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var events = @Html.Raw(ViewData["Events"]);
+            var eventArr = [];
+            events.forEach(evt => {
+                eventArr.push ({
+                    title: evt.Name,
+                    start: evt.Start,
+                    end: evt.End
+                },);
+            });
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function(info) {
+                    
+                },
+                dateClick: function(info) {
+                    const ele = document.getElementById('saveEventModal');
+                    const startTime = document.getElementById('id_start_time');
+                    let saveEventModal = new bootstrap.Modal(ele);
+                    ele.addEventListener('shown.bs.modal', event => {
+                        console.log(info.dateStr);
+                        startTime.value = info.dateStr + " 06:00";
+                    });
+                    saveEventModal.show();
+                    //alert(info.dateStr);
+                },
+                initialView: 'dayGridMonth',
+                events: eventArr,
+            });
+            calendar.render();
+        });
+
+    </script> 
+}
