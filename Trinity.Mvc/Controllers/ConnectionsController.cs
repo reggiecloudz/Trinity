@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,17 +37,17 @@ namespace Trinity.Mvc.Controllers
             _notificationRepository = notificationRepository;
         }
 
-        [Route("/[controller]/send-request")]
+        [Route("send-request")]
         [HttpPost]
         public async Task<IActionResult> SendRequest(ConnectionRequestInputModel model)
         {
-            var currentUserId = HttpContext.User.FindFirst("UserId")!.Value;
+            var currentUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             if (ModelState.IsValid)
             {
-                var member = _context.Users.Where(m => m.Id == model.ReceiverId).FirstOrDefault();
+                var member = _context.Users.FirstOrDefault(m => m.Id == model.ReceiverId);
                 await _context.ConnectionRequests.AddAsync(new ConnectionRequest
                 {
-                    RequesterId = HttpContext.User.FindFirst("MemberId")!.Value,
+                    RequesterId = currentUserId,
                     ReceiverId = member!.Id
                 });
                 await _context.SaveChangesAsync();
@@ -60,6 +61,34 @@ namespace Trinity.Mvc.Controllers
             }
 
             return RedirectToAction(nameof(MembersController.Index), "Members", new { id = currentUserId });
+        }
+
+        [Route("{requesterId}/Add")]
+        public async Task<IActionResult> AddConnection(string requesterId)
+        {
+            var currentUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var request = _context.ConnectionRequests.FirstOrDefault(x => x.ReceiverId == currentUserId && x.RequesterId == requesterId);
+
+            if (request ==  null)
+            {
+                return RedirectToAction(nameof(MembersController.Index), "Members", new { id = currentUserId });
+            }
+
+            var newConnection = new Connection
+            {
+                ConnectId = currentUserId,
+                ConnectorId = requesterId
+            };
+
+            _context.Add(newConnection);
+            _context.Remove(request);
+
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(MembersController.Connections), "Members", new { id = currentUserId });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
