@@ -13,7 +13,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Trinity.Mvc.Data;
+using Trinity.Mvc.Data.Repository;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -22,6 +24,7 @@ namespace Trinity.Mvc.Controllers
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEventRepository _eventRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<MembersController> _logger;
@@ -30,12 +33,14 @@ namespace Trinity.Mvc.Controllers
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, 
-            ILogger<MembersController> logger)
+            ILogger<MembersController> logger,
+            IEventRepository eventRepository)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _eventRepository = eventRepository;
         }
 
         [Route("/[controller]/{id}")]
@@ -72,21 +77,11 @@ namespace Trinity.Mvc.Controllers
         public async Task<IActionResult> Calendar(string id)
         {
             ApplicationUser user = await _context.Users
-                .Include(m => m.Events)
-                    .ThenInclude(e => e.Event)
                 .FirstOrDefaultAsync(u => u.Id == id);
-            List<Event> events = new List<Event>();
-            foreach (var item in user.Events)
-            {
-                events.Add(item.Event);
-            }
-            var options = new JsonSerializerOptions 
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                WriteIndented = true
-            };
+            
+            List<EventViewModel> events = _eventRepository.GetUserEvents(user.Id);
 
-            ViewData["Events"] = JsonSerializer.Serialize(events, options);   
+            ViewData["Events"] = _eventRepository.EventsJsonSerializer(events);   
             return View(user);
         }
 

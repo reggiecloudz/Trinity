@@ -41,6 +41,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 
     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

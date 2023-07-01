@@ -29,7 +29,7 @@
     </div>
 </main>
 
-<vc:save-event></vc:save-event>
+<partial name="Events/_EventModal" />
 
 @section JavaScripts {
     <script src="~/assets/vendor/fullcalendar/dist/index.global.min.js"></script>
@@ -45,23 +45,29 @@
                 eventArr.push ({
                     title: evt.Name,
                     start: evt.Start,
-                    end: evt.End
+                    end: evt.End,
+                    location: evt.Location,
+                    details: evt.Details,
+                    project: evt.ProjectName
                 },);
             });
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 eventClick: function(info) {
+                    const modal = document.getElementById('eventDetailsModal');
+                    let eventModal = new bootstrap.Modal(modal);
                     
+                    modal.addEventListener('shown.bs.modal', event => {
+                        document.getElementById('eventDetailsLabel').innerHTML = info.event.extendedProps.project;
+                        document.getElementById('evtName').innerHTML = info.event.title;
+                        document.getElementById('details').innerHTML = info.event.extendedProps.details;
+                        document.getElementById('location').innerHTML = info.event.extendedProps.location;
+                        document.getElementById('evt-start').innerHTML = info.event.start.toLocaleString();
+                        document.getElementById('evt-end').innerHTML = info.event.end.toLocaleString();
+                    });
+                    eventModal.show();
                 },
                 dateClick: function(info) {
-                    const ele = document.getElementById('saveEventModal');
-                    const startTime = document.getElementById('id_start_time');
-                    let saveEventModal = new bootstrap.Modal(ele);
-                    ele.addEventListener('shown.bs.modal', event => {
-                        console.log(info.dateStr);
-                        startTime.value = info.dateStr + " 06:00";
-                    });
-                    saveEventModal.show();
                     //alert(info.dateStr);
                 },
                 initialView: 'dayGridMonth',

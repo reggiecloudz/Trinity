@@ -6,19 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
+using Trinity.Mvc.Data.Repository;
 using Trinity.Mvc.Domain;
 using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEventRepository _repo;
 
-        public EventsController(ApplicationDbContext context)
+        public EventsController(ApplicationDbContext context, IEventRepository repo)
         {
             _context = context;
+            _repo = repo;
         }
 
         // GET: Events
@@ -28,7 +31,7 @@ namespace Trinity.Mvc.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        [Route("/[controller]/{id}/Details")]
+        [Route("{id}")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.Events == null)
@@ -65,15 +68,14 @@ namespace Trinity.Mvc.Controllers
         }
 
         // GET: Events/Create
+        [Route("[action]")]
         public IActionResult Create()
         {
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id");
             return View();
         }
 
-        // POST: Events/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("[action]")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Details,Location,Start,End,For,ProjectId")] Event @event)
@@ -88,7 +90,7 @@ namespace Trinity.Mvc.Controllers
             return View(@event);
         }
 
-        // GET: Events/Edit/5
+        [Route("{id}/[action]")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null || _context.Events == null)
@@ -105,9 +107,7 @@ namespace Trinity.Mvc.Controllers
             return View(@event);
         }
 
-        // POST: Events/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("{id}/[action]")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Slug,Name,Details,Location,Start,End,ProjectId")] Event @event)
