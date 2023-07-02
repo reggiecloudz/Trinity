@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Data.Repository;
@@ -66,29 +67,37 @@ namespace Trinity.Mvc.Controllers
         [Route("{requesterId}/Add")]
         public async Task<IActionResult> AddConnection(string requesterId)
         {
-            var currentUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var requestUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == requesterId);
 
-            var request = _context.ConnectionRequests.FirstOrDefault(x => x.ReceiverId == currentUserId && x.RequesterId == requesterId);
+            var request = _context.ConnectionRequests.FirstOrDefault(x => x.ReceiverId == currentUser!.Id && x.RequesterId == requestUser!.Id);
 
             if (request ==  null)
             {
-                return RedirectToAction(nameof(MembersController.Index), "Members", new { id = currentUserId });
+                return RedirectToAction(nameof(MembersController.Index), "Members", new { id = currentUser!.Id });
             }
 
             var newConnection = new Connection
             {
-                ConnectId = currentUserId,
-                ConnectorId = requesterId
+                ConnectId = currentUser!.Id,
+                ConnectorId = requestUser!.Id
+            };
+
+            var newChat = new Chat
+            {
+                Name = $"{currentUser.UserName}-{requestUser.UserName}",
+                Type = ChatType.Private
             };
 
             _context.Add(newConnection);
+            newChat.Users.Add(new ChatUser { UserId = currentUser.Id });
+            newChat.Users.Add(new ChatUser { UserId = requestUser.Id });
+            _context.Add(newChat);
             _context.Remove(request);
 
             await _context.SaveChangesAsync();
 
-
-
-            return RedirectToAction(nameof(MembersController.Connections), "Members", new { id = currentUserId });
+            return RedirectToAction(nameof(MembersController.Connections), "Members", new { id = currentUser.Id });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
