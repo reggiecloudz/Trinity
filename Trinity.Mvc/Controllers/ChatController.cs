@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -40,11 +41,13 @@ namespace Trinity.Mvc.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SendMessage(string content, string roomName, int chatId, [FromServices]ApplicationDbContext context)
         {
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var message = new ChatMessage
             {
                 ChatId = chatId,
                 Content = content,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+                UserName = user!.UserName,
+                FullName = user.FullName
             };
 
             context.ChatMessages.Add(message);

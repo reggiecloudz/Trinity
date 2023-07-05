@@ -36,7 +36,6 @@ namespace Trinity.Mvc.Controllers
         {
             var chat = await _context.Chats
                 .Include(c => c.Messages)
-                    .ThenInclude(m => m.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
            
             return View(chat);
@@ -46,11 +45,13 @@ namespace Trinity.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(long chatId, string content)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var message = new ChatMessage
             {
                 ChatId = chatId,
                 Content = content,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+                UserName = user!.UserName,
+                FullName = user.FullName
             };
 
             _context.ChatMessages.Add(message);
@@ -108,7 +109,8 @@ namespace Trinity.Mvc.Controllers
                 Type = ChatType.Private
             };
 
-            chat.Users.Add(new ChatUser {
+            chat.Users.Add(new ChatUser 
+            {
                 UserId = currentUser.Id
             });
 

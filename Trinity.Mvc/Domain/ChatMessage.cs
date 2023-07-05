@@ -11,8 +11,9 @@ namespace Trinity.Mvc.Domain
 
         public string Content { get; set; } = string.Empty;
 
-        public string UserId { get; set; } = string.Empty;
-        public virtual ApplicationUser? User { get; set; }
+        public string UserName { get; set; } = string.Empty;
+
+        public string FullName { get; set; } = string.Empty;
 
         public long ChatId { get; set; }
         public virtual Chat? Chat { get; set; }

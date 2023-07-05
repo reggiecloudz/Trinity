@@ -1,32 +1,59 @@
 ﻿@model Chat
 
 @{
-    ViewData["Title"] = $"{@Model.Name} Chat";
+    var currentUser = User.FindFirst(ClaimTypes.Name)!.Value;
+    ViewData["Title"] = "Chat";
 }
 
-<div class="container my-4">
-    <div class="chat-body">
 
-        @foreach (var m in Model.Messages)
-        {
-            <div class="message mb-4 border border-primary p-3">
-                <header>@m.User!.UserName:</header>
-                <div>@m.Content</div>
-                <footer>@m.Created</footer>
+<partial name="_NavBar" />
+
+<main role="main">
+    <div class="container">
+        <div class="row gx-0">
+            <!-- Sidebar START -->
+            @await Component.InvokeAsync("ChatSidebar")
+            <!-- Sidebar END -->
+
+            <!-- Chat conversation START -->
+            <div class="col-lg-8 col-xxl-9">
+                <div class="card card-chat rounded-start-lg-0 border-start-lg-0">
+                    <div class="card-body h-100">
+                        <div class="tab-content py-0 mb-0 h-100" id="chatTabsContent">
+                            <!-- Conversation item START -->
+                            <div class="fade tab-pane show active h-100" id="chat-1" role="tabpanel" aria-labelledby="chat-1-tab">
+                                <!-- Top avatar and status START -->
+                                @await Component.InvokeAsync("ChatHeader", new { chatId = Model.Id})
+                                <!-- Top avatar and status END -->
+                                <hr>
+                                <!-- Chat conversation START -->
+                                <div class="chat-conversation-content custom-scrollbar">
+                                   @await Html.PartialAsync("Messenging/_ChatMessage", Model.Messages)
+                                </div>
+                                <!-- Chat conversation END -->
+                            </div>
+                            <!-- Conversation item END -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Messenging" asp-action="CreateMessage">
+                            <div class="d-sm-flex align-items-end">
+                                <input type="hidden" name="chatId" value="@Model.Id"/>
+                                <input type="hidden" name="roomName" value="@Model.Name"/>
+                                <textarea id="content-input" name="Content" class="form-control mb-sm-0 mb-3" data-autoresize placeholder="Type a message" rows="1"></textarea>
+                                <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
+                                <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
+                                <button type="submit" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        }
-
+            <!-- Chat conversation END -->
+        </div>
     </div>
+</main>
 
-    <div>
-        <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Messenging" asp-action="CreateMessage">
-            <input type="hidden" name="chatId" value="@Model.Id"/>
-            <input type="hidden" name="roomName" value="@Model.Name"/>
-            <input id="content-input" type="text" name="content"/>
-            <button type="submit">Send</button>
-        </form>
-    </div> 
-</div>
 @section Scripts{ 
     <script src="~/lib/axios/axios.min.js"></script>
 
@@ -36,27 +63,56 @@
             .build();
 
         var _connectionId = '';
+        var currentUserName = "@currentUser";
 
         connection.on("ReceiveMessage", function (data) {
-            var message = document.createElement("div");
-            message.classList.add('message', 'mb-4', 'border', 'border-primary', 'p-3');
+            var cuDiv1 = document.createElement("div");
+            cuDiv1.classList.add('d-flex', 'mb-1', 'justify-content-end', 'text-end');
+            var cuDiv2 = document.createElement("div");
+            cuDiv2.classList.add('w-100');
+            var cuDiv3 = document.createElement("div");
+            cuDiv3.classList.add('d-flex', 'flex-column', 'align-items-end');
+            var cuContent = document.createElement("div");
+            cuContent.classList.add('bg-primary', 'text-white', 'p-2', 'px-3', 'rounded-2');
+            var cuDate = document.createElement("div");
+            cuDate.classList.add('small', 'my-2');
 
-            var header = document.createElement("header");
-            header.appendChild(document.createTextNode(data.nick));
+            var ouDiv1 = document.createElement("div");
+            ouDiv1.classList.add('d-flex', 'mb-1');
+            var ouDiv2 = document.createElement("div");
+            ouDiv2.classList.add('flex-grow-1');
+            var ouDiv3 = document.createElement("div");
+            ouDiv3.classList.add('w-100');
+            var ouDiv4 = document.createElement("div");
+            ouDiv4.classList.add('d-flex', 'flex-column', 'align-items-start');
+            var ouContent = document.createElement("div");
+            ouContent.classList.add('bg-light', 'text-secondary', 'p-2', 'px-3', 'rounded-2');
+            var ouDate = document.createElement("div");
+            ouDate.classList.add('small', 'my-2');
 
-            var p = document.createElement("div");
-            p.appendChild(document.createTextNode(data.content));
-
-            var footer = document.createElement("footer");
             var date = new Date(data.created).toLocaleTimeString();
-            footer.appendChild(document.createTextNode(date));
+            var dateTextNode = document.createTextNode(date)
+            var ccc = document.querySelector('.chat-conversation-content');
 
-            message.appendChild(header);
-            message.appendChild(p);
-            message.appendChild(footer);
-
-            var body = document.querySelector('.chat-body');
-            body.append(message);
+            if (data.userName == currentUserName) {
+                cuContent.appendChild(document.createTextNode(data.content));
+                cuDate.appendChild(document.createTextNode(date));
+                cuDiv1.appendChild(cuDiv2);
+                cuDiv2.appendChild(cuDiv3);
+                cuDiv3.appendChild(cuContent);
+                cuDiv3.appendChild(cuDate);
+                ccc.append(cuDiv1);
+            }
+            else {
+                ouContent.appendChild(document.createTextNode(data.content));
+                ouDate.innerHTML = `${data.fullName} - ${date}`;
+                ouDiv1.appendChild(ouDiv2);
+                ouDiv2.appendChild(ouDiv3);
+                ouDiv3.appendChild(ouDiv4);
+                ouDiv4.appendChild(ouContent);
+                ouDiv4.appendChild(ouDate);
+                ccc.append(ouDiv1);
+            }
         })
 
 

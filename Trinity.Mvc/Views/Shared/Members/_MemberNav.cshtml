@@ -64,6 +64,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Chats" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
+                                <i class="fa-solid fa-comment-dots me-2"></i>
+                                Chats
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-light-emphasis" asp-controller="Members" asp-action="Discussions" asp-route-id="@(User.FindFirst("UserId")!.Value)"> 
                                 <i class="fa-solid fa-quote-left me-2"></i>
                                 Discussions
