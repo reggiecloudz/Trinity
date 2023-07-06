@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Trinity.Mvc.Data.Repository;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -20,13 +21,15 @@ namespace Trinity.Mvc.Controllers
     public class MessengingController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IChatRepository _repo;
         private readonly ILogger<MessengingController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public MessengingController(ILogger<MessengingController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public MessengingController(ILogger<MessengingController> logger, ApplicationDbContext context, IChatRepository repo, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _repo = repo;
             _userManager = userManager;
         }
 
@@ -45,13 +48,11 @@ namespace Trinity.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(long chatId, string content)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var message = new ChatMessage
             {
                 ChatId = chatId,
                 Content = content,
-                UserName = user!.UserName,
-                FullName = user.FullName
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
             };
 
             _context.ChatMessages.Add(message);

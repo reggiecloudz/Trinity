@@ -43,6 +43,7 @@ builder.Services.AddSession();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 
     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

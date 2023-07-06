@@ -6,7 +6,7 @@
 
 @foreach (var item in Model)
 {
-    @if (item.UserName == currentUser)
+    @if (item.User!.UserName == currentUser)
     {
         <div class="d-flex justify-content-end text-end mb-1">
             <div class="w-100">
@@ -24,7 +24,7 @@
                 <div class="w-100">
                     <div class="d-flex flex-column align-items-start">
                         <div class="bg-light text-secondary p-2 px-3 rounded-2">@item.Content</div>
-                        <div class="small my-2">@item.FullName - @item.Created.ToString("HH:mm tt")</div>
+                        <div class="small my-2">@item.User!.FullName - @item.Created.ToString("HH:mm tt")</div>
                     </div>
                 </div>
             </div>

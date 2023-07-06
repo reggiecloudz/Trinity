@@ -26,8 +26,6 @@
     --black-pearl: #060A0E;
     --black-pearl-rgb: 6, 10, 14;
     
-
-
     /* general elements */
     --bs-link-color: var(--silver-tree);
     --bs-link-color-rgb: var(--silver-tree-rgb);
@@ -275,4 +273,37 @@ a.nav-link.text-light-emphasis:hover {
 
 .disable-link {
     pointer-events: none;
+}
+
+.project-list-table {
+    border-collapse: separate;
+    border-spacing: 0 12px
+}
+
+.project-list-table tr {
+    background-color: #fff
+}
+
+.table-nowrap td, .table-nowrap th {
+    white-space: nowrap;
+}
+.table-borderless>:not(caption)>*>* {
+    border-bottom-width: 0;
+}
+.table>:not(caption)>*>* {
+    padding: 0.75rem 0.75rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.avatar-title {
+    align-items: center;
+    background-color: #3b76e1;
+    color: #fff;
+    display: flex;
+    font-weight: 500;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
 }

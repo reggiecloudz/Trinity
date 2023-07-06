@@ -15,10 +15,9 @@
             </div>
 
             <div class="col-lg-9 vstack gap-4">
+                @* <partial name="Messenging/_ChatTable" /> *@
                 @await Component.InvokeAsync("UserChats")
             </div>
         </div>
     </div>
 </main>
-
-<partial name="_Footer" />

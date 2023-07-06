@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Trinity.Mvc.Data.Repository;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -18,10 +19,12 @@ namespace Trinity.Mvc.Controllers
     public class ChatController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
+        private readonly IChatRepository _repo;
 
-        public ChatController(IHubContext<ChatHub> chat)
+        public ChatController(IHubContext<ChatHub> chat, IChatRepository repo)
         {
-            _chat = chat;    
+            _chat = chat;  
+            _repo = repo;  
         }
 
         [HttpPost("[action]/{connectionId}/{roomName}")]
@@ -41,20 +44,18 @@ namespace Trinity.Mvc.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SendMessage(string content, string roomName, int chatId, [FromServices]ApplicationDbContext context)
         {
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var message = new ChatMessage
             {
                 ChatId = chatId,
                 Content = content,
-                UserName = user!.UserName,
-                FullName = user.FullName
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
             };
 
             context.ChatMessages.Add(message);
             await context.SaveChangesAsync();
 
             await _chat.Clients.Group(roomName)
-                .SendAsync("ReceiveMessage", message);
+                .SendAsync("ReceiveMessage", _repo.GetMessageById(message.Id));
 
             return Ok();
         }

@@ -27,7 +27,7 @@
                                 <!-- Top avatar and status END -->
                                 <hr>
                                 <!-- Chat conversation START -->
-                                <div class="chat-conversation-content custom-scrollbar">
+                                <div id="conversation" class="chat-conversation-content custom-scrollbar">
                                    @await Html.PartialAsync("Messenging/_ChatMessage", Model.Messages)
                                 </div>
                                 <!-- Chat conversation END -->
@@ -90,28 +90,30 @@
             var ouDate = document.createElement("div");
             ouDate.classList.add('small', 'my-2');
 
-            var date = new Date(data.created).toLocaleTimeString();
-            var dateTextNode = document.createTextNode(date)
-            var ccc = document.querySelector('.chat-conversation-content');
+            var convo = $("#conversation .os-viewport");
+            var height = convo[0].scrollHeight
+            var ccc = document.querySelector('#conversation .os-content');
 
             if (data.userName == currentUserName) {
                 cuContent.appendChild(document.createTextNode(data.content));
-                cuDate.appendChild(document.createTextNode(date));
+                cuDate.appendChild(document.createTextNode(data.created));
                 cuDiv1.appendChild(cuDiv2);
                 cuDiv2.appendChild(cuDiv3);
                 cuDiv3.appendChild(cuContent);
                 cuDiv3.appendChild(cuDate);
-                ccc.append(cuDiv1);
+                ccc.appendChild(cuDiv1);
+                convo.scrollTop(height);
             }
             else {
                 ouContent.appendChild(document.createTextNode(data.content));
-                ouDate.innerHTML = `${data.fullName} - ${date}`;
+                ouDate.appendChild(document.createTextNode(`${data.fullName} - ${data.created}`));
                 ouDiv1.appendChild(ouDiv2);
                 ouDiv2.appendChild(ouDiv3);
                 ouDiv3.appendChild(ouDiv4);
                 ouDiv4.appendChild(ouContent);
                 ouDiv4.appendChild(ouDate);
-                ccc.append(ouDiv1);
+                ccc.appendChild(ouDiv1);
+                convo.scrollTop(height);                
             }
         })
 
