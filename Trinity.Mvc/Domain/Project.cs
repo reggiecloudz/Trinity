@@ -25,12 +25,17 @@ namespace Trinity.Mvc.Domain
 
         public DateTime Deadline { get; set; }
 
+        public DateTime PublishDate { get; set; }
+
         public bool Closed { get; set; } = false;
 
         public bool Published { get; set; } = false;
 
         public long? CauseId { get; set; }
         public virtual Cause? Cause { get; set; }
+
+        public long? CityId { get; set; }
+        public virtual City? City { get; set; }
 
         public string ManagerId { get; set; } = string.Empty;
         public virtual ApplicationUser? Manager { get; set; }
@@ -46,5 +51,10 @@ namespace Trinity.Mvc.Domain
         public virtual ICollection<ProjectSupporter> Supporters { get; set; } = new List<ProjectSupporter>();
         public virtual ICollection<Event> Events { get; set; } = new List<Event>();
         public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
+
+        public int DaysPassed()
+        {
+            return (DateTime.Now.Date - this.PublishDate.Date).Days;
+        }
     }
 }
