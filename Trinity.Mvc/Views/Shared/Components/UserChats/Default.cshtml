@@ -1,10 +1,10 @@
-@model IEnumerable<PrivateChatViewModel>
+@model IEnumerable<ChatRoomModel>
 
 <div class="card h-100">
     <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
         <h1 class="h4 card-title">Conversations</h1>
         <!-- Button modal -->
-        <a class="btn btn-complementary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveProjectModal">
+        <a class="btn btn-complementary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveChatRoomModal">
             <i class="fa-solid fa-plus pe-1"></i> Create group
         </a>
     </div>
@@ -16,9 +16,6 @@
                         <table class="table project-list-table table-nowrap align-middle table-borderless">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="ps-4" style="width: 50px;">
-                                        <div class="form-check font-size-16"><input type="checkbox" class="form-check-input" id="contacusercheck" /><label class="form-check-label" for="contacusercheck"></label></div>
-                                    </th>
                                     <th scope="col">User</th>
                                     <th scope="col">Messages</th>
                                     <th scope="col">Unread</th>
@@ -30,50 +27,62 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                    <th scope="row" class="ps-4">
-                                        <div class="form-check font-size-16"><input type="checkbox" class="form-check-input" id="contacusercheck1" /><label class="form-check-label" for="contacusercheck1"></label></div>
-                                    </th>
-                                    <td>
-                                        <img src="~/media/members/@item.ProfileImage" alt="" class="avatar-sm rounded-circle me-2" />
-                                        <a href="#" class="text-body">@item.FullName</a>
-                                    </td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>Private</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <!-- Card share action menu -->
-                                            <button class="icon-sm btn btn-primary-soft btn-block w-100" type="button" id="profileAction2" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="bi bi-three-dots"></i>
-                                            </button>
-                                            <!-- Card share action dropdown menu -->
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
-                                                <li>
-                                                    <a class="dropdown-item" asp-controller="Positions" asp-action="Details" asp-route-id="@item.Id">
-                                                        <i class="bi bi-info-circle-fill fa-fw pe-2"></i>
-                                                        Details
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="bi bi-pencil-square fa-fw pe-2"></i>
-                                                        Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="bi bi-trash fa-fw pe-2"></i>
-                                                        Delete
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        <th scope="row" class="ps-4">
+                                            <img src="~/@item.Photo" alt="" class="avatar-sm rounded-circle me-2" />
+                                            <a asp-controller="Messenging" asp-action="Chat" asp-route-id="@item.Chat!.Id" class="text-body">@item.Name</a>
+                                        </th>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>
+                                            @if(item.Chat!.Type == ChatType.Private)
+                                            {
+                                                <span>Private</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Room</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <!-- Card share action menu -->
+                                                <button class="icon-sm btn btn-primary-soft btn-block w-100" type="button" id="profileAction2" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </button>
+                                                <!-- Card share action dropdown menu -->
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">
+                                                            <i class="bi bi-info-circle-fill fa-fw pe-2"></i>
+                                                            Details
+                                                        </a>
+                                                    </li>
+                                                    @if (item.Chat.Type == ChatType.Room && item.ChatRole == ChatRole.Admin)
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editChatRoomModal-@item.Chat.Id" class="px-2 text-primary">
+                                                                <i class="bi bi-pencil fa-fw pe-2"></i> Update
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">
+                                                            <i class="bi bi-trash fa-fw pe-2"></i>
+                                                            Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        @if (item.Chat.Type == ChatType.Room && item.ChatRole == ChatRole.Admin)
+                                        {
+                                            @await Component.InvokeAsync("EditChatRoom", new { chatId = item.Chat.Id })
+                                        }
+                                    </tr>
                                 }
                             </tbody>
                         </table>

@@ -1,4 +1,4 @@
-@model IEnumerable<PrivateChatViewModel>
+@model IEnumerable<ChatRoomModel>
 
 <div class="col-lg-4 col-xxl-3" id="chatTabs" role="tablist">
     <!-- Divider -->
@@ -49,14 +49,13 @@
                                 {
                                     <li data-bs-dismiss="offcanvas">
                                         <!-- Chat user tab item -->
-                                        <a asp-controller="Messenging" asp-action="Chat" asp-route-id="@item.Id" class="nav-link active text-start" id="chat-1-tab">
+                                        <a asp-controller="Messenging" asp-action="Chat" asp-route-id="@item.Chat!.Id" class="nav-link active text-start" id="chat-1-tab">
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
-                                                    <img class="avatar-img rounded-circle" src="~/media/members/@(item.ProfileImage)" alt="">
+                                                    <img class="avatar-img rounded-circle" src="~/@(item.Photo)" alt="">
                                                 </div>
                                                 <div class="flex-grow-1 d-block">
-                                                    <h6 class="mb-0 mt-1">@item.FullName</h6>
-                                                    <div class="small text-secondary">@item.Name</div>
+                                                    <h6 class="mb-0 mt-1">@item.Name</h6>
                                                 </div>
                                             </div>
                                         </a>

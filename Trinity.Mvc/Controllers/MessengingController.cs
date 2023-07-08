@@ -63,7 +63,7 @@ namespace Trinity.Mvc.Controllers
 
         [Route("Create-Room")]
         [HttpPost]
-        public async Task<IActionResult> CreateRoom(string name)
+        public async Task<IActionResult> CreateRoom(string name, string[] selectedUsers)
         {
             var chat = new Chat
             {
@@ -79,10 +79,19 @@ namespace Trinity.Mvc.Controllers
                 Role = ChatRole.Admin
             });
 
+            if (selectedUsers != null)
+            {
+                foreach (var user in selectedUsers)
+                {
+                    var chatUser = new ChatUser { ChatId = chat.Id, UserId = user, Role = ChatRole.Member };
+                    chat.Users.Add(chatUser);
+                }
+            }
+
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(MembersController.Chats), "Members", new { id = currentUser.Id });
         }
 
 
@@ -127,6 +136,53 @@ namespace Trinity.Mvc.Controllers
             return RedirectToAction(nameof(MembersController.Chats), "Members", new { id = currentUser.Id });
         }
 
+        [Route("{id}/Update-Room")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateRoom(string Name, string[] SelectedUsers, long? id)
+        {
+            if (id == null || _context.Chats == null)
+            {
+                return NotFound();
+            }
+
+            var chat = await _context.Chats.Include(c => c.Users).FirstOrDefaultAsync(c => c.Id == id);
+
+            if (chat == null)
+            {
+                return NotFound();
+            }
+
+            var currentUser = await GetCurrentUserAsync();
+
+            if (SelectedUsers != null)
+            {
+                // var roomMembers = new HashSet<string>(chat.Users.Select(u => u.UserId));
+                // Console.WriteLine("STOP============================");
+
+                await _repo.RemoveUnchecked(SelectedUsers, chat);
+
+                foreach (var user in SelectedUsers)
+                {
+                    // Console.WriteLine(user);
+                    if(!_context.ChatUsers.Where(c => c.UserId == user && c.ChatId == chat.Id).Any())
+                    {
+                        var chatUser = new ChatUser { UserId = user, Role = ChatRole.Member };
+                        chat.Users.Add(chatUser);
+                    }
+                    
+                }
+                // Console.WriteLine("STOP============================");
+            }
+
+            chat.Name = Name;
+
+            _context.Chats.Update(chat);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(MembersController.Chats), "Members", new { id = currentUser.Id });
+        }
+
         private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         private string PrivateRoomDisplay(string roomName)
@@ -147,10 +203,10 @@ namespace Trinity.Mvc.Controllers
 
                 rooms.Add(new PrivateChatViewModel
                 {
-                    Id = item.Id,
-                    Name = user!.UserName,
-                    FullName = user.FullName,
-                    ProfileImage = user.ProfileImage
+                    // Id = item.Id,
+                    Name = user!.FullName,
+                    ProfileImage = user.ProfileImage,
+                    Chat = item
                 });
             }
 

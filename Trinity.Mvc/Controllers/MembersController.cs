@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Trinity.Mvc.Controllers
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConnectionRepository _connectionRepository;
         private readonly IEventRepository _eventRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,12 +33,14 @@ namespace Trinity.Mvc.Controllers
 
         public MembersController(
             ApplicationDbContext context,
+            IConnectionRepository connectionRepository,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, 
             ILogger<MembersController> logger,
             IEventRepository eventRepository)
         {
             _context = context;
+            _connectionRepository = connectionRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -109,6 +113,19 @@ namespace Trinity.Mvc.Controllers
             ApplicationUser user = await _context.Users
                 .Include(u => u.Chats)
                 .FirstOrDefaultAsync(u => u.Id == id);
+            var connections = await _connectionRepository.GetUserConnections(user.Id);
+            var checkboxes = new List<SelectableConnection>();
+            foreach (var item in connections)
+            {
+                checkboxes.Add(new SelectableConnection
+                {
+                    Value = item.Id,
+                    Text = item.FullName,
+                    UserPhoto = $"media/members/{item.ProfileImage}",
+                    IsChecked = false
+                });
+            }
+            ViewData["Connections"] = checkboxes;
             return View(user);
         }
 
@@ -137,6 +154,26 @@ namespace Trinity.Mvc.Controllers
         public IActionResult Error()
         {
             return View("Error!");
+        }
+
+        private async Task GetConnections(Chat chat)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var connections = await _connectionRepository.GetUserConnections(currentUserId);
+            var roomMembers = new HashSet<string>(chat.Users.Select(u => u.UserId));
+            var connectionList = new List<UserConnection>();
+
+            foreach (var item in connections)
+            {
+                connectionList.Add(new UserConnection
+                {
+                    UserId = item.Id,
+                    Name = item.FullName,
+                    Selected = roomMembers.Contains(item.Id)
+                });
+            }
+
+            ViewData["Connections"] = connectionList;
         }
     }
 }

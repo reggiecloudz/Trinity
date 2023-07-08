@@ -4,8 +4,8 @@
     <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
         <h1 class="h4 card-title">Conversations</h1>
         <!-- Button modal -->
-        <a class="btn btn-complementary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveProjectModal">
-            <i class="fa-solid fa-plus pe-1"></i> Create group
+        <a class="btn btn-complementary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveChatRoomModal">
+            <i class="fa-solid fa-plus pe-1"></i> Create room
         </a>
     </div>
     <div class="card-body">
@@ -43,7 +43,9 @@
                                     <td>
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item">
-                                                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#saveChatRoomModal-@item.Id" class="px-2 text-primary">
+                                                    <i class="bx bx-pencil font-size-18"></i>
+                                                </a>
                                             </li>
                                             <li class="list-inline-item">
                                                 <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger"><i class="bx bx-trash-alt font-size-18"></i></a>

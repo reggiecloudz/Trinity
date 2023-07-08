@@ -23,7 +23,7 @@
                             <!-- Conversation item START -->
                             <div class="fade tab-pane show active h-100" id="chat-1" role="tabpanel" aria-labelledby="chat-1-tab">
                                 <!-- Top avatar and status START -->
-                                @await Component.InvokeAsync("ChatHeader", new { chatId = Model.Id})
+                                @await Component.InvokeAsync("ChatHeader", new { chat = Model })
                                 <!-- Top avatar and status END -->
                                 <hr>
                                 <!-- Chat conversation START -->

@@ -1,12 +1,12 @@
-@model ChatUser
+@model ChatRoomModel
 
 <div class="d-sm-flex justify-content-between align-items-center">
     <div class="d-flex mb-2 mb-sm-0">
         <div class="flex-shrink-0 avatar me-2">
-            <img class="avatar-img rounded-circle" src="~/media/members/@(Model.User!.ProfileImage)" alt="">
+            <img class="avatar-img rounded-circle" src="~/@(Model.Photo)" alt="">
         </div>
         <div class="d-block flex-grow-1">
-            <h6 class="mb-0 mt-1">@Model.User!.FullName</h6>
+            <h6 class="mb-0 mt-1">@Model.Name</h6>
             <div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
         </div>
     </div>
