@@ -444,7 +444,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("City");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
@@ -1174,7 +1174,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("State");
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Subscription", b =>

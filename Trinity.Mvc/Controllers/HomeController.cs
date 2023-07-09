@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
@@ -8,7 +9,7 @@ using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.Controllers;
 
-[Route("[controller]/[action]")]
+[Route("[controller]")]
 public class HomeController : Controller
 {
         private readonly ApplicationDbContext _context;
@@ -28,7 +29,7 @@ public class HomeController : Controller
             _logger = logger;
         }
 
-    [Route("/")]
+    [Route("~/")]
     public IActionResult Index()
     {
         // if (_signInManager.IsSignedIn(HttpContext.User))
@@ -40,11 +41,20 @@ public class HomeController : Controller
         return View();
     }
 
-    // [Route("/[action]")]
-    // public IActionResult Product()
-    // {
-    //     return View();
-    // }
+    [Route("/[action]")]
+    public async Task<IActionResult> About()
+    {
+        var states = await _context.States.ToListAsync();
+        ViewData["States"] = new SelectList(states, "Id", "Name");
+        return View();
+    }
+
+    [HttpGet("/States/{stateId}/Cities")]
+    public async Task<JsonResult> GetCities(long stateId)
+    {
+        var cities = await _context.Cities.Where(c => c.StateId == stateId).OrderBy(c => c.Name).ToListAsync();
+        return new JsonResult(cities);
+    }
 
     public IActionResult Privacy()
     {

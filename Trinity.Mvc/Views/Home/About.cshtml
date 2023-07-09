@@ -1,0 +1,76 @@
+@model IEnumerable<State>
+@{
+    ViewData["Title"] = "About Page";
+}
+
+<partial name="_NavBar" />
+
+<main role="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form>
+                    <div class="mb-3">
+                        <label for="state-select" class="form-label">State</label>
+                        <select class="form-select" name="state-select" id="state-select" asp-items="@ViewBag.States">
+                            <option selected>-- Select State --</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">City</label>
+                        <select class="form-select" name="" id="city-select">
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</main>
+
+<partial name="_Footer" />
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            $('#city-select').attr('disabled', true);
+            $('#state-select').change(() => {
+                var stateId = $("#state-select").val();
+                console.log(stateId)
+                if (stateId > 0) {
+                    loadCities(stateId);
+                }
+                else {
+                    alert("Select State.");
+                    $('#city-select').empty();
+                    $('#city-select').attr('disabled', true);
+                    $('#city-select').append('<option value="-1">--No Cities found--</option>');
+                }
+            });
+        });
+        function loadCities(stateId) {
+                $('#city-select').empty();
+                console.log(stateId);
+                $.ajax({
+                    url: `/States/${stateId}/Cities`,
+                    success: (response) => {
+                        console.log(response);
+                        if (response != null && response != undefined && response.length > 0) {
+                            $('#city-select').attr('disabled', false);
+                            $('#city-select').append('<option value="-1">--Select City--</option>');
+                            $.each(response, (i, data) => {
+                                $('#city-select').append(`<option value="${data.id}">${data.name}</option>`);
+                            });
+                        }
+                        else {
+                            $('#city-select').attr('disabled', true);
+                            $('#city-select').append('<option value="-1">--No Cities found--</option>');
+                        }
+                    },
+                    error: (error) => {
+                        alert(error);
+                    }
+                })
+            }
+    </script>
+}

@@ -11,8 +11,8 @@ using Trinity.Mvc.Data;
 namespace Trinity.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230625182502_Start")]
-    partial class Start
+    [Migration("20230709034535_New")]
+    partial class New
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -337,6 +337,116 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Causes");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Chat", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.ChatMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.ChatUser", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ChatId");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("ChatUsers");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.City", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("County")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("StateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
@@ -879,10 +989,16 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Property<long?>("CauseId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("CityId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("Closed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Deadline")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ManagerId")
@@ -897,6 +1013,9 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("Published")
                         .HasColumnType("tinyint(1)");
 
@@ -910,6 +1029,8 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CauseId");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("ManagerId");
 
@@ -1027,6 +1148,35 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Replies");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.State", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Subscription", b =>
@@ -1254,6 +1404,55 @@ namespace Trinity.Mvc.Data.Migrations
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.ChatMessage", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Chat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.ChatUser", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Chat", "Chat")
+                        .WithMany("Users")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany("Chats")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.City", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.State", "State")
+                        .WithMany("Cities")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
@@ -1511,6 +1710,10 @@ namespace Trinity.Mvc.Data.Migrations
                         .WithMany("Projects")
                         .HasForeignKey("CauseId");
 
+                    b.HasOne("Trinity.Mvc.Domain.City", "City")
+                        .WithMany("Projects")
+                        .HasForeignKey("CityId");
+
                     b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Manager")
                         .WithMany("Projects")
                         .HasForeignKey("ManagerId")
@@ -1518,6 +1721,8 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Cause");
+
+                    b.Navigation("City");
 
                     b.Navigation("Manager");
                 });
@@ -1665,6 +1870,8 @@ namespace Trinity.Mvc.Data.Migrations
                 {
                     b.Navigation("Applications");
 
+                    b.Navigation("Chats");
+
                     b.Navigation("Discussions");
 
                     b.Navigation("Donations");
@@ -1701,6 +1908,18 @@ namespace Trinity.Mvc.Data.Migrations
                 {
                     b.Navigation("Children");
 
+                    b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Chat", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.City", b =>
+                {
                     b.Navigation("Projects");
                 });
 
@@ -1768,6 +1987,11 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Replies");
 
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.State", b =>
+                {
+                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Topic", b =>

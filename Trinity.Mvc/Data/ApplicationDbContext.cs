@@ -16,6 +16,8 @@ namespace Trinity.Mvc.Data
         public DbSet<WorkExperience> WorkExperiences { get; set; }
         public DbSet<Cause> Causes { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<State> States { get; set; }
         public DbSet<ProjectSupporter> ProjectSupporters { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<Position> Positions { get; set; } 
