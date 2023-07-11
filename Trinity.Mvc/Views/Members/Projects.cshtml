@@ -20,3 +20,48 @@
 </main>
 
 <vc:save-project></vc:save-project>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            $('#CityId').attr('disabled', true);
+            $('#States').change(() => {
+                var stateId = $("#States").val();
+                console.log(stateId)
+                if (stateId > 0) {
+                    loadCities(stateId);
+                }
+                else {
+                    alert("Select State.");
+                    $('#CityId').empty();
+                    $('#CityId').attr('disabled', true);
+                    $('#CityId').append('<option value="-1">--No Cities found--</option>');
+                }
+            });
+        });
+        function loadCities(stateId) {
+                $('#CityId').empty();
+
+                $.ajax({
+                    url: `/api/States/${stateId}/Cities`,
+                    success: (response) => {
+                        console.log(response);
+                        if (response != null && response != undefined && response.length > 0) {
+                            $('#CityId').attr('disabled', false);
+                            $('#CityId').append('<option value="-1">--Select City--</option>');
+                            $.each(response, (i, data) => {
+                                $('#CityId').append(`<option value="${data.id}">${data.name}</option>`);
+                            });
+                        }
+                        else {
+                            $('#CityId').attr('disabled', true);
+                            $('#CityId').append('<option value="-1">--No Cities found--</option>');
+                        }
+                    },
+                    error: (error) => {
+                        alert(error);
+                    }
+                })
+            }
+    </script>
+}

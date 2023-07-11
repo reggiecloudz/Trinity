@@ -13,5 +13,6 @@ namespace Trinity.Mvc.Models
         public Project Project { get; set; }
 
         public SelectList Causes { get; set; }
+        public SelectList States { get; set; }
     }
 }

@@ -8,22 +8,19 @@ using Trinity.Mvc.Data;
 
 namespace Trinity.Mvc.ViewComponents
 {
-    public class HomeProjectsViewComponent : ViewComponent
+    public class StateCarouselViewComponent : ViewComponent
     {
         private readonly ApplicationDbContext _context;
 
-        public HomeProjectsViewComponent(ApplicationDbContext context)
+        public StateCarouselViewComponent(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var projects = await _context.Projects
-                .Include(p => p.Cause)
-                .Include(p => p.City)
-                .ToListAsync();
-            return View(projects);
+            var states = await _context.States.OrderBy(s => s.Name).ToListAsync();
+            return View(states);
         }
     }
 }

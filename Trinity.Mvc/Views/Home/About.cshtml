@@ -52,7 +52,7 @@
                 $('#city-select').empty();
                 console.log(stateId);
                 $.ajax({
-                    url: `/States/${stateId}/Cities`,
+                    url: `/api/States/${stateId}/Cities`,
                     success: (response) => {
                         console.log(response);
                         if (response != null && response != undefined && response.length > 0) {

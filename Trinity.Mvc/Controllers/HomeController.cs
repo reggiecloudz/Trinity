@@ -49,13 +49,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet("/States/{stateId}/Cities")]
-    public async Task<JsonResult> GetCities(long stateId)
-    {
-        var cities = await _context.Cities.Where(c => c.StateId == stateId).OrderBy(c => c.Name).ToListAsync();
-        return new JsonResult(cities);
-    }
-
     public IActionResult Privacy()
     {
         return View();

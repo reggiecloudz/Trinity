@@ -23,7 +23,17 @@
                     </div>
                     <div class="form-group mb-3">
                         <label asp-for="Project.CauseId" class="control-label">Cause</label>
-                        <select asp-for="Project.CauseId" class ="form-control" asp-items="Model.Causes"></select>
+                        <select asp-for="Project.CauseId" class ="form-select" asp-items="Model.Causes"></select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">State</label>
+                        <select id="States" class ="form-select" asp-items="Model.States">
+                            <option selected>-- Select State --</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Project.CityId" class="control-label">City</label>
+                        <select asp-for="Project.CityId" class ="form-select" id="CityId"></select>
                     </div>
                 </form>
             </div>

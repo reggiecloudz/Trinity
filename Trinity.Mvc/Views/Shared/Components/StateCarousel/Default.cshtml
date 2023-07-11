@@ -1,0 +1,46 @@
+@model IEnumerable<State>
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- Card header START -->
+                <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
+                    <h6 class="card-title mb-0">Find project by location</h6>
+                    <a href="#" class="btn btn-sm btn-primary-soft"> See all </a>
+                </div>      
+                <!-- Card header START -->
+
+                <!-- Card body START -->
+                <div class="card-body">
+                    <div class="tiny-slider arrow-hover">
+                        <div class="tiny-slider-inner ms-n4" data-arrow="true" data-dots="false" data-items-xl="3" data-items-lg="2" data-items-md="2" data-items-sm="2" data-items-xs="1" data-gutter="12" data-edge="30">
+                            <!-- Slider items -->
+                            
+                                @foreach (var item in Model)
+                                {
+                                    <div>
+                                        <div class="card shadow-none text-center bg-transparent border-none">
+                                            <!-- Card body -->
+                                            <div class="card-body p-2 pb-0">
+                                                <div class="avatar avatar-xl">
+                                                    <a href="#!"><img class="avatar-img" src="~/@item.Icon" alt=""></a>
+                                                </div>
+                                                <h6 class="card-title mb-1 mt-3"> <a href="#!"> @item.Name </a></h6>
+                                            </div>
+                                            <!-- Card footer -->
+                                            <div class="card-footer p-2 border-0">
+                                                <a asp-controller="States" asp-action="Cities" asp-route-code="@item.Code" class="btn btn-sm btn-primary-soft w-100"> View </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- Card body END -->
+            </div>
+        </div>
+    </div>
+</div>

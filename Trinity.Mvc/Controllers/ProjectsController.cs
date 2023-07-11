@@ -107,7 +107,7 @@ namespace Trinity.Mvc.Controllers
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,PhotoUpload,CauseId")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,PhotoUpload,CauseId,CityId")] Project project)
         {
             if (ModelState.IsValid)
             {
