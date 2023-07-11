@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trinity.Mvc.Data;
 
@@ -10,9 +11,10 @@ using Trinity.Mvc.Data;
 namespace Trinity.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230711085932_AddJourney")]
+    partial class AddJourney
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +182,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Applicants", (string)null);
+                    b.ToTable("Applicants");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.ApplicationUser", b =>
@@ -281,7 +283,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Cause", b =>
@@ -311,7 +313,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Causes", (string)null);
+                    b.ToTable("Causes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Chat", b =>
@@ -335,7 +337,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chats", (string)null);
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.ChatMessage", b =>
@@ -367,7 +369,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMessages", (string)null);
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.ChatUser", b =>
@@ -385,7 +387,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.ToTable("ChatUsers", (string)null);
+                    b.ToTable("ChatUsers");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.City", b =>
@@ -421,7 +423,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Comment", b =>
@@ -463,7 +465,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("SceneId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
@@ -492,7 +494,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ConnectorId");
 
-                    b.ToTable("Connections", (string)null);
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.ConnectionRequest", b =>
@@ -521,7 +523,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("RequesterId");
 
-                    b.ToTable("ConnectionRequests", (string)null);
+                    b.ToTable("ConnectionRequests");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.DiscussionGroup", b =>
@@ -561,7 +563,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ModeratorId");
 
-                    b.ToTable("DiscussionGroups", (string)null);
+                    b.ToTable("DiscussionGroups");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Donation", b =>
@@ -602,7 +604,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Donations", (string)null);
+                    b.ToTable("Donations");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Event", b =>
@@ -649,7 +651,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.EventAttendee", b =>
@@ -670,7 +672,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("AttendeeId");
 
-                    b.ToTable("EventAttendees", (string)null);
+                    b.ToTable("EventAttendees");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Expenditure", b =>
@@ -708,7 +710,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Expenditures", (string)null);
+                    b.ToTable("Expenditures");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Follow", b =>
@@ -737,7 +739,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("Follows", (string)null);
+                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Fundraiser", b =>
@@ -776,7 +778,7 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("ProjectId")
                         .IsUnique();
 
-                    b.ToTable("Fundraisers", (string)null);
+                    b.ToTable("Fundraisers");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Invitation", b =>
@@ -812,7 +814,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Invitations", (string)null);
+                    b.ToTable("Invitations");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.JobRequirement", b =>
@@ -838,7 +840,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("JobRequirements", (string)null);
+                    b.ToTable("JobRequirements");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Journey", b =>
@@ -861,7 +863,7 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("ProjectId")
                         .IsUnique();
 
-                    b.ToTable("Journeys", (string)null);
+                    b.ToTable("Journeys");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
@@ -882,7 +884,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Notification", b =>
@@ -903,7 +905,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Position", b =>
@@ -946,7 +948,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Positions", (string)null);
+                    b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Post", b =>
@@ -991,7 +993,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Project", b =>
@@ -1048,7 +1050,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.ProjectSupporter", b =>
@@ -1077,7 +1079,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("SupporterId");
 
-                    b.ToTable("ProjectSupporters", (string)null);
+                    b.ToTable("ProjectSupporters");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Proposal", b =>
@@ -1124,7 +1126,7 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("ProjectId")
                         .IsUnique();
 
-                    b.ToTable("Proposals", (string)null);
+                    b.ToTable("Proposals");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Reply", b =>
@@ -1161,7 +1163,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Replies", (string)null);
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Scene", b =>
@@ -1195,7 +1197,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("JourneyId");
 
-                    b.ToTable("Scenes", (string)null);
+                    b.ToTable("Scenes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.State", b =>
@@ -1224,7 +1226,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("States", (string)null);
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Subscription", b =>
@@ -1245,7 +1247,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Topic", b =>
@@ -1275,7 +1277,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("DiscussionGroupId");
 
-                    b.ToTable("Topics", (string)null);
+                    b.ToTable("Topics");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.UserNotification", b =>
@@ -1299,7 +1301,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("UserNotifications", (string)null);
+                    b.ToTable("UserNotifications");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Vote", b =>
@@ -1320,7 +1322,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.WorkExperience", b =>
@@ -1361,7 +1363,7 @@ namespace Trinity.Mvc.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WorkExperiences", (string)null);
+                    b.ToTable("WorkExperiences");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

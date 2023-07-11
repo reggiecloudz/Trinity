@@ -33,8 +33,9 @@ namespace Trinity.Mvc.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Expenditure> Expenditures { get; set; } 
-        public DbSet<Album> Albums { get; set; }
-        public DbSet<MediaFile> MediaFiles { get; set; }
+        public DbSet<Journey> Journeys { get; set; }
+        public DbSet<Scene> Scenes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Fundraiser> Fundraisers { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<Event> Events { get; set; }

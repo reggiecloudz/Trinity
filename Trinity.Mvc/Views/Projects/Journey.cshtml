@@ -1,0 +1,30 @@
+@model Project
+@{
+    ViewData["Title"] = $"{Model.Name} Expenditures";
+}
+
+@section Stylesheets {
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor/glightbox-master/dist/css/glightbox.min.css">
+}
+
+<partial name="_NavBar" />
+
+<main>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                @await Html.PartialAsync("Projects/_ProjectNav", Model)
+            </div>
+
+            <div class="col-lg-9 vstack gap-4">
+                @await Html.PartialAsync("Journeys/_JourneyScenes", Model.Journey)
+            </div>
+        </div>
+    </div>
+</main>
+
+<vc:save-scene></vc:save-scene>
+
+@section JavaScripts {
+    <script src="~/assets/vendor/glightbox-master/dist/js/glightbox.min.js"></script>
+}

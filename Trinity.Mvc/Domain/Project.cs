@@ -42,7 +42,7 @@ namespace Trinity.Mvc.Domain
 
         public virtual Proposal? Proposal { get; set; }
 
-        public virtual Album? Album { get; set; }
+        public virtual Journey? Journey { get; set; }
 
         public virtual Fundraiser? Fundraiser { get; set; }
 

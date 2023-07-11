@@ -9,6 +9,9 @@ namespace Trinity.Mvc.Domain
     {
         public long Id { get; set; }
 
+        public long ProjectId { get; set; }
+        public virtual Project? Project { get; set; }
+
         public virtual ICollection<Scene> Scenes { get; set; } = new List<Scene>();
     }
 }

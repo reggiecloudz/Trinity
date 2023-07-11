@@ -124,6 +124,7 @@ namespace Trinity.Mvc.Controllers
                 await _context.SaveChangesAsync();
 
                 _context.Proposals.Add(new Proposal { ProjectId = project.Id });
+                _context.Journeys.Add(new Journey { ProjectId = project.Id });
                 _context.ProjectSupporters.Add(new ProjectSupporter
                 {
                     ProjectId = project.Id,
@@ -273,6 +274,30 @@ namespace Trinity.Mvc.Controllers
                 return NotFound();
             }
             ViewData["ProjectId"] = project.Id;
+            return View(project);
+        }
+
+        [Route("{id}/Journey")]
+        public async Task<ActionResult> Journey(long? id)
+        {
+            if (id == null || _context.Journeys == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.Cause)
+                .Include(p => p.Manager)
+                .Include(p => p.Journey)
+                    .ThenInclude(p => p!.Scenes)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+            
+            ViewData["JourneyId"] = project.Journey!.Id;
             return View(project);
         }
 
