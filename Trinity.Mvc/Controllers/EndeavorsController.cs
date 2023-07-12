@@ -36,6 +36,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
+                .Include(p => p.Fundraiser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
@@ -43,6 +44,7 @@ namespace Trinity.Mvc.Controllers
                 return NotFound();
             }
             ViewData["ProjectId"] = project.Id;
+            ViewData["FundraiserId"] = project.Fundraiser!.Id;
             return View(project);
         }
 

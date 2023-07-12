@@ -1,0 +1,35 @@
+@model Donation
+
+<div class="modal fade" id="makeDonationModal" tabindex="-1" aria-labelledby="makeDonationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="makeDonationLabel">Make Donation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="donation-form" method="post" asp-controller="Donations" asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Amount" class="control-label"></label>
+                        <input asp-for="Amount" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Message" class="control-label"></label>
+                        <textarea asp-for="Message" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="FundraiserId" class ="form-control" value="@ViewBag.FundraiserId" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="donation-form" class="btn btn-primary">Save now</button>
+                <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 @model Project
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <div class="card card-body">
     <div class="mt-4">
@@ -49,9 +51,20 @@
                 <small> other donors</small>
             </li>
         </ul>
-        <a class="btn btn-primary-soft btn-block w-100 my-3" href="#">
-            <i class="fa-solid fa-heart me-1"></i>
-            Donate 
-        </a>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-soft btn-block w-100 my-3" data-bs-toggle="modal" data-bs-target="#makeDonationModal">
+                <i class="fa-solid fa-heart me-1"></i>
+                Donate 
+            </a>
+        }
+        else
+        {
+            <a class="btn btn-primary-soft btn-block w-100 my-3" asp-controller="Account" asp-action="Login">
+                <i class="fa-solid fa-heart me-1"></i>
+                Donate 
+            </a>
+        }
+        
     </div>
 </div>

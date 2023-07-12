@@ -9,6 +9,8 @@ namespace Trinity.Mvc.Domain
 {
     public class Donation : Entity
     {
+        public Donation() {}
+        
         public long Id { get; set; }
         
         [Precision(8, 2)]

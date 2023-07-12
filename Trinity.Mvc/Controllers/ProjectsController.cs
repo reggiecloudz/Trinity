@@ -125,6 +125,7 @@ namespace Trinity.Mvc.Controllers
 
                 _context.Proposals.Add(new Proposal { ProjectId = project.Id });
                 _context.Journeys.Add(new Journey { ProjectId = project.Id });
+                _context.Fundraisers.Add(new Fundraiser { ProjectId = project.Id });
                 _context.ProjectSupporters.Add(new ProjectSupporter
                 {
                     ProjectId = project.Id,
