@@ -10,7 +10,7 @@ using Trinity.Mvc.Data;
 
 namespace Trinity.Mvc.Controllers
 {
-    [Route("[controller]")]
+    [Route("Projects")]
     public class EndeavorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,8 +23,8 @@ namespace Trinity.Mvc.Controllers
             _logger = logger;
         }
 
-        [Route("{slug}")]
-        public async Task<ActionResult> Profile(string slug)
+        [Route("{id}/{slug}")]
+        public async Task<ActionResult> Profile(long id, string slug)
         {
             if (slug == null || _context.Projects == null)
             {
@@ -36,7 +36,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {
@@ -46,8 +46,8 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Expenditures")]
-        public async Task<ActionResult> Expenditures(string slug)
+        [Route("{id}/{slug}/Expenditures")]
+        public async Task<ActionResult> Expenditures(string slug, long id)
         {
             if (slug == null || _context.Projects == null)
             {
@@ -59,7 +59,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Expenditures)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {
@@ -69,8 +69,8 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Positions")]
-        public async Task<ActionResult> Positions(string slug)
+        [Route("{id}/{slug}/Positions")]
+        public async Task<ActionResult> Positions(string slug, long id)
         {
             if (slug == null || _context.Projects == null)
             {
@@ -82,7 +82,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Positions)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {
@@ -92,8 +92,8 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Events")]
-        public async Task<ActionResult> Events(string slug)
+        [Route("{id}/{slug}/Events")]
+        public async Task<ActionResult> Events(string slug, long id)
         {
             if (slug == null || _context.Projects == null)
             {
@@ -105,7 +105,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {
@@ -115,8 +115,8 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Supporters")]
-        public async Task<ActionResult> Supporters(string slug)
+        [Route("{id}/{slug}/Supporters")]
+        public async Task<ActionResult> Supporters(string slug, long id)
         {
             if (slug == null || _context.Projects == null)
             {
@@ -128,7 +128,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {
@@ -138,8 +138,8 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Journey")]
-        public async Task<ActionResult> Journey(string slug)
+        [Route("{id}/{slug}/Journey")]
+        public async Task<ActionResult> Journey(string slug, long id)
         {
             if (slug == null || _context.Journeys == null)
             {
@@ -152,7 +152,7 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Manager)
                 .Include(p => p.Journey)
                     .ThenInclude(p => p!.Scenes)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)
             {

@@ -83,32 +83,32 @@
         <ul
             class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Profile")" asp-controller="Endeavors" asp-action="Profile" asp-route-slug="@Model.Slug">
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Profile")" asp-controller="Endeavors" asp-action="Profile" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id">
                     About
                 </a>
             </li>
             <li class="nav-item"> 
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Journey")" asp-controller="Endeavors" asp-action="Journey" asp-route-slug="@Model.Slug">
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Journey")" asp-controller="Endeavors" asp-action="Journey" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id">
                     Journey
                 </a> 
             </li>
             <li class="nav-item"> 
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Expenditures")" asp-controller="Endeavors" asp-action="Expenditures" asp-route-slug="@Model.Slug">
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Expenditures")" asp-controller="Endeavors" asp-action="Expenditures" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id">
                     Expenditures
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Positions")" asp-controller="Endeavors" asp-action="Positions" asp-route-slug="@Model.Slug">
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Positions")" asp-controller="Endeavors" asp-action="Positions" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id">
                     Positions
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Events")" asp-controller="Endeavors" asp-action="Events" asp-route-slug="@Model.Slug">
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Events")" asp-controller="Endeavors" asp-action="Events" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id">
                     Events
                 </a>
             </li>
             <li class="nav-item"> 
-                <a class="nav-link @Html.ActiveClass("Endeavors", "Supporters")" asp-controller="Endeavors" asp-action="Supporters" asp-route-slug="@Model.Slug"> 
+                <a class="nav-link @Html.ActiveClass("Endeavors", "Supporters")" asp-controller="Endeavors" asp-action="Supporters" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id"> 
                     Supporters 
                     <span class="badge bg-primary bg-opacity-10 text-primary small">250</span> 
                 </a>
