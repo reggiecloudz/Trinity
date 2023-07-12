@@ -26,5 +26,6 @@ namespace Trinity.Mvc.Domain
         public virtual Project? Project { get; set; }
 
         public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
+        public virtual ICollection<Reward> Rewards { get; set; } = new List<Reward>();
     }
 }

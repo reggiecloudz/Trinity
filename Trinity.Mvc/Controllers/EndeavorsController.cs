@@ -32,6 +32,7 @@ namespace Trinity.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
@@ -54,6 +55,7 @@ namespace Trinity.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
                 .Include(p => p.Expenditures)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
@@ -76,6 +78,7 @@ namespace Trinity.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
                 .Include(p => p.Positions)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
@@ -98,6 +101,7 @@ namespace Trinity.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
@@ -120,6 +124,7 @@ namespace Trinity.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
                 .Include(p => p.Proposal)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
@@ -133,25 +138,26 @@ namespace Trinity.Mvc.Controllers
             return View(project);
         }
 
-        [Route("{slug}/Media")]
-        public async Task<ActionResult> Media(string slug)
+        [Route("{slug}/Journey")]
+        public async Task<ActionResult> Journey(string slug)
         {
-            if (slug == null || _context.Projects == null)
+            if (slug == null || _context.Journeys == null)
             {
                 return NotFound();
             }
 
             var project = await _context.Projects
-                .Include(p => p.Proposal)
+                .Include(p => p.City)
                 .Include(p => p.Cause)
                 .Include(p => p.Manager)
+                .Include(p => p.Journey)
+                    .ThenInclude(p => p!.Scenes)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (project == null)
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = project.Id;
             return View(project);
         }
 

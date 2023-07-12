@@ -3,38 +3,12 @@
 <div class="card">
     <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
         <h5 class="card-title">Journey</h5>
-        <a class="btn btn-sm btn-primary-soft" href="#" data-bs-toggle="modal" data-bs-target="#saveSceneModal"> <i class="fa-solid fa-plus pe-1"></i> Create scene</a>
     </div>
     <div class="card-body">
         <div class="row g-3">
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
-                    <a class="stretched-link" data-bs-toggle="modal" data-bs-target="#saveSceneModal">
-                        <i class="fa-solid fa-film fs-1"></i>
-                        <h6 class="mt-2">Add scene</h6>
-                    </a>
-                </div>
-            </div>
             @foreach (var item in Model.Journey!.Scenes)
             {
-                <div class="col-sm-6 col-lg-3 position-relative">
-                    <div class="position-absolute bottom-0 mb-5 end-0">
-                        <!-- Dropdown START -->
-                        <div class="dropdown mb-2 me-3">
-                            <a href="#" class="icon-sm bg-primary text-white rounded-circle" id="photoActionEdit" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>
-                            <!-- Dropdown menu -->
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="photoActionEdit">
-                                <li><a class="dropdown-item" href="#"> <i class="bi bi-tag fa-fw pe-1"></i> Remove Tag</a></li>
-                                <li><a class="dropdown-item" href="#"> <i class="bi bi-download fa-fw pe-1"></i> Download </a></li>
-                                <li><a class="dropdown-item" href="#"> <i class="bi bi-person fa-fw pe-1"></i> Make Profile Picture</a></li>
-                                <li><a class="dropdown-item" href="#"> <i class="bi bi-person-bounding-box fa-fw pe-1"></i> Make Cover Photo</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-1"></i> Report photo</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
                     <a href="~/media/scenes/@item.Photo" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
                         <img class="rounded img-fluid" src="~/media/scenes/@item.Photo" alt="">
                     </a>
@@ -99,6 +73,20 @@
                                 </ul>
                             </li>
                         </ul>
+                        <div class="d-flex mb-3">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-xs me-2">
+                                <img class="avatar-img rounded-circle" src="~/assets/images/avatar/04.jpg" alt="">
+                            </div>
+                            <!-- Comment box  -->
+                            <form class="position-relative w-100">
+                                <textarea class="one form-control pe-4 bg-light" data-autoresize rows="1" placeholder="Add a comment..."></textarea>
+                                <!-- Emoji button -->
+                                <div class="position-absolute top-0 end-0">
+                                    <button class="btn" type="button">🙂</button>
+                                </div>
+                            </form>
+                        </div>
                         <ul class="comment-wrap list-unstyled ">
                             <li class="comment-item">
                                 <div class="d-flex">
@@ -136,6 +124,6 @@
                     </div>
                 </div>
             }
-        </div>   
+        </div>
     </div>
 </div>

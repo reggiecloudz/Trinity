@@ -1,4 +1,4 @@
-@model Scene
+@model SceneInputModel
 
 <div class="modal fade" id="saveSceneModal" tabindex="-1" aria-labelledby="saveSceneLabel"
     aria-hidden="true">
@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="scene-form" method="post" asp-controller="Projects" asp-action="Create" novalidate enctype="multipart/form-data">
+                <form id="scene-form" method="post" asp-controller="Scenes" asp-action="Create" novalidate enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group mb-3">
                         <label asp-for="Title" class="control-label"></label>
@@ -28,6 +28,7 @@
                     </div>
                     <div class="form-group">
                         <input type="hidden" asp-for="JourneyId" class ="form-control" value="@ViewBag.JourneyId" />
+                        <input type="hidden" asp-for="ProjectId" class ="form-control" value="@ViewBag.ProjectId" />
                     </div>
                 </form>
             </div>

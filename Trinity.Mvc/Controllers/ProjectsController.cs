@@ -298,6 +298,7 @@ namespace Trinity.Mvc.Controllers
             }
             
             ViewData["JourneyId"] = project.Journey!.Id;
+            ViewData["ProjectId"] = project.Id;
             return View(project);
         }
 

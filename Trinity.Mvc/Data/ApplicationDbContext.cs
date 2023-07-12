@@ -38,6 +38,8 @@ namespace Trinity.Mvc.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Fundraiser> Fundraisers { get; set; }
         public DbSet<Donation> Donations { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
+        public DbSet<UserReward> UserRewards { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<EventAttendee> EventAttendees { get; set; }
@@ -156,6 +158,21 @@ namespace Trinity.Mvc.Data
                 obj.HasOne(un => un.User)
                     .WithMany(n => n.Votes)
                     .HasForeignKey(un => un.UserId)
+                    .IsRequired();
+            });
+
+            builder.Entity<UserReward>(ur =>
+            {
+                ur.HasKey(x => new { x.UserId, x.RewardId });
+
+                ur.HasOne(x => x.Reward)
+                    .WithMany(x => x.Recipients)
+                    .HasForeignKey(x => x.RewardId)
+                    .IsRequired();
+
+                ur.HasOne(x => x.User)
+                    .WithMany(x => x.Rewards)
+                    .HasForeignKey(x => x.UserId)
                     .IsRequired();
             });
         }

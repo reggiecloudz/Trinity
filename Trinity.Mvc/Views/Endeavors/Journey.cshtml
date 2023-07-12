@@ -1,7 +1,11 @@
 @model Project
 
 @{
-    ViewData["Title"] = $"{Model.Name} Media";
+    ViewData["Title"] = $"{Model.Name} Journey";
+}
+
+@section Stylesheets {
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor/glightbox-master/dist/css/glightbox.min.css">
 }
 
 <partial name="_NavBar" />
@@ -14,7 +18,7 @@
 
                  <div class="row g-4 pb-3">
                     <div class="col-12">
-                        <partial name="Members/_AboutMember" />
+                        @await Html.PartialAsync("Journeys/_PeoplesJourney", Model)
                     </div>
                 </div>
             </div>
@@ -30,3 +34,7 @@
 </main>
 
 <partial name="_Footer" />
+
+@section JavaScripts {
+    <script src="~/assets/vendor/glightbox-master/dist/js/glightbox.min.js"></script>
+}

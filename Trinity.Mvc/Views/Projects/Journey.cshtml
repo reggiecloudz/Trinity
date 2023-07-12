@@ -1,6 +1,6 @@
 @model Project
 @{
-    ViewData["Title"] = $"{Model.Name} Expenditures";
+    ViewData["Title"] = $"{Model.Name} Journey";
 }
 
 @section Stylesheets {
@@ -17,7 +17,7 @@
             </div>
 
             <div class="col-lg-9 vstack gap-4">
-                @await Html.PartialAsync("Journeys/_JourneyScenes", Model.Journey)
+                @await Html.PartialAsync("Journeys/_JourneyScenes", Model)
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "Roboto Flex";
-    src: url('../fonts/roboto/flex/RobotoFlex-VariableFont_GRAD\,XTRA\,YOPQ\,YTAS\,YTDE\,YTFI\,YTLC\,YTUC\,opsz\,slnt\,wdth\,wght.ttf') format('truetype');
+    font-family: "Raleway";
+    src: url('../fonts/raleway/Raleway-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
@@ -52,7 +52,7 @@
 }
 
 body {
-    font-family: "Roboto Flex" !important;
+    font-family: "Raleway" !important;
 }
 
 a:hover {
@@ -95,14 +95,14 @@ h6 {
 
 .theme-gradient {
     background: var(--american-red);
-    background: -moz-linear-gradient(0deg, rgba(var(--american-red-rgb), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
-    background: -webkit-linear-gradient(0deg, rgba((var(--american-red-rgb)), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
-    background: linear-gradient(0deg, rgba(var(--american-red-rgb), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
+    background: -moz-linear-gradient(0deg, rgba(var(--paua-rgb), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba((var(--paua-rgb)), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
+    background: linear-gradient(0deg, rgba(var(--paua-rgb), 1) 0%, rgba(var(--complementary-rgb),1) 100%);
     /* filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#63a0c1",endColorstr="#6fbc97",GradientType=1); */
 }
 
 .cover-gradient {
-    background-color: var(--american-red); background-image: linear-gradient(315deg, var(--complementary) 0%, var(--american-red) 74%);
+    background-color: var(--american-red); background-image: linear-gradient(315deg, var(--flame-red) 0%, var(--american-red) 74%);
 }
 
 .card.card-overlay-bottom:before {

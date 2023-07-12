@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.ViewComponents
 {
@@ -11,7 +12,7 @@ namespace Trinity.Mvc.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
-            return View(new Scene());
+            return View(new SceneInputModel());
         }
     }
 }
