@@ -131,21 +131,6 @@ namespace Trinity.Mvc.Data
                     .IsRequired();
             });
 
-            builder.Entity<Like>(obj =>
-            {
-                obj.HasKey(un => new { un.PostId, un.UserId });
-
-                obj.HasOne(un => un.Post)
-                    .WithMany(m => m.Likes)
-                    .HasForeignKey(un => un.PostId)
-                    .IsRequired();
-
-                obj.HasOne(un => un.User)
-                    .WithMany(n => n.Likes)
-                    .HasForeignKey(un => un.UserId)
-                    .IsRequired();
-            });
-
             builder.Entity<Vote>(obj =>
             {
                 obj.HasKey(un => new { un.ReplyId, un.UserId });

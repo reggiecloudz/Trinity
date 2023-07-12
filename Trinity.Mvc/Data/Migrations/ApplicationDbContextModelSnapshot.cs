@@ -861,19 +861,32 @@ namespace Trinity.Mvc.Data.Migrations
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
                 {
-                    b.Property<long>("PostId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<long>("ObjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PostId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("PostId", "UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -1760,19 +1773,15 @@ namespace Trinity.Mvc.Data.Migrations
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
                 {
-                    b.HasOne("Trinity.Mvc.Domain.Post", "Post")
+                    b.HasOne("Trinity.Mvc.Domain.Post", null)
                         .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });

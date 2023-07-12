@@ -11,8 +11,8 @@ using Trinity.Mvc.Data;
 namespace Trinity.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230709034535_New")]
-    partial class New
+    [Migration("20230712104954_Reset")]
+    partial class Reset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,29 +147,6 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Trinity.Mvc.Domain.Album", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
-
-                    b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Applicant", b =>
@@ -449,6 +426,48 @@ namespace Trinity.Mvc.Data.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Comment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<long?>("CommentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SceneId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("SceneId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
                 {
                     b.Property<long>("Id")
@@ -554,8 +573,8 @@ namespace Trinity.Mvc.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(11, 2)
-                        .HasColumnType("decimal(11,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
@@ -571,9 +590,6 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long?>("ProjectId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
@@ -582,8 +598,6 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("DonorId");
 
                     b.HasIndex("FundraiserId");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("Donations");
                 });
@@ -824,51 +838,61 @@ namespace Trinity.Mvc.Data.Migrations
                     b.ToTable("JobRequirements");
                 });
 
-            modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
-                {
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("PostId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Likes");
-                });
-
-            modelBuilder.Entity("Trinity.Mvc.Domain.MediaFile", b =>
+            modelBuilder.Entity("Trinity.Mvc.Domain.Journey", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("AlbumId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("File")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlbumId");
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
 
-                    b.ToTable("MediaFiles");
+                    b.ToTable("Journeys");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("ObjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PostId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Notification", b =>
@@ -1150,6 +1174,73 @@ namespace Trinity.Mvc.Data.Migrations
                     b.ToTable("Replies");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Reward", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("AmountNeeded")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("FundraiserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Item")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FundraiserId");
+
+                    b.ToTable("Rewards");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Scene", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("JourneyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JourneyId");
+
+                    b.ToTable("Scenes");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.State", b =>
                 {
                     b.Property<long>("Id")
@@ -1252,6 +1343,27 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("UserNotifications");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.UserReward", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<long>("RewardId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("UserId", "RewardId");
+
+                    b.HasIndex("RewardId");
+
+                    b.ToTable("UserRewards");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Vote", b =>
@@ -1367,17 +1479,6 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Trinity.Mvc.Domain.Album", b =>
-                {
-                    b.HasOne("Trinity.Mvc.Domain.Project", "Project")
-                        .WithOne("Album")
-                        .HasForeignKey("Trinity.Mvc.Domain.Album", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Trinity.Mvc.Domain.Applicant", b =>
                 {
                     b.HasOne("Trinity.Mvc.Domain.Position", "Position")
@@ -1455,6 +1556,35 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Comment", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.Comment", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Trinity.Mvc.Domain.Reply", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Trinity.Mvc.Domain.Scene", "Scene")
+                        .WithMany("Comments")
+                        .HasForeignKey("SceneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Scene");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Connection", b =>
                 {
                     b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "Connect")
@@ -1525,10 +1655,6 @@ namespace Trinity.Mvc.Data.Migrations
                         .HasForeignKey("FundraiserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Trinity.Mvc.Domain.Project", null)
-                        .WithMany("Donations")
-                        .HasForeignKey("ProjectId");
 
                     b.Navigation("Donor");
 
@@ -1636,13 +1762,22 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Position");
                 });
 
-            modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
+            modelBuilder.Entity("Trinity.Mvc.Domain.Journey", b =>
                 {
-                    b.HasOne("Trinity.Mvc.Domain.Post", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
+                    b.HasOne("Trinity.Mvc.Domain.Project", "Project")
+                        .WithOne("Journey")
+                        .HasForeignKey("Trinity.Mvc.Domain.Journey", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Like", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Post", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "User")
                         .WithMany("Likes")
@@ -1650,20 +1785,7 @@ namespace Trinity.Mvc.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Trinity.Mvc.Domain.MediaFile", b =>
-                {
-                    b.HasOne("Trinity.Mvc.Domain.Album", "Album")
-                        .WithMany("Files")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Album");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Position", b =>
@@ -1782,6 +1904,28 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Reward", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Fundraiser", "Fundraiser")
+                        .WithMany("Rewards")
+                        .HasForeignKey("FundraiserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fundraiser");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Scene", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Journey", "Journey")
+                        .WithMany("Scenes")
+                        .HasForeignKey("JourneyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Journey");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Subscription", b =>
                 {
                     b.HasOne("Trinity.Mvc.Domain.DiscussionGroup", "DiscussionGroup")
@@ -1831,6 +1975,25 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.UserReward", b =>
+                {
+                    b.HasOne("Trinity.Mvc.Domain.Reward", "Reward")
+                        .WithMany("Recipients")
+                        .HasForeignKey("RewardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Trinity.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany("Rewards")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reward");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.Vote", b =>
                 {
                     b.HasOne("Trinity.Mvc.Domain.Reply", "Reply")
@@ -1861,11 +2024,6 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Trinity.Mvc.Domain.Album", b =>
-                {
-                    b.Navigation("Files");
-                });
-
             modelBuilder.Entity("Trinity.Mvc.Domain.ApplicationUser", b =>
                 {
                     b.Navigation("Applications");
@@ -1891,6 +2049,8 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("ProjectsSupported");
 
                     b.Navigation("Replies");
+
+                    b.Navigation("Rewards");
 
                     b.Navigation("Subscriptions");
 
@@ -1923,6 +2083,11 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("Trinity.Mvc.Domain.Comment", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("Trinity.Mvc.Domain.DiscussionGroup", b =>
                 {
                     b.Navigation("Posts");
@@ -1942,6 +2107,13 @@ namespace Trinity.Mvc.Data.Migrations
             modelBuilder.Entity("Trinity.Mvc.Domain.Fundraiser", b =>
                 {
                     b.Navigation("Donations");
+
+                    b.Navigation("Rewards");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Journey", b =>
+                {
+                    b.Navigation("Scenes");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Notification", b =>
@@ -1965,15 +2137,13 @@ namespace Trinity.Mvc.Data.Migrations
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Project", b =>
                 {
-                    b.Navigation("Album");
-
-                    b.Navigation("Donations");
-
                     b.Navigation("Events");
 
                     b.Navigation("Expenditures");
 
                     b.Navigation("Fundraiser");
+
+                    b.Navigation("Journey");
 
                     b.Navigation("Positions");
 
@@ -1987,6 +2157,16 @@ namespace Trinity.Mvc.Data.Migrations
                     b.Navigation("Replies");
 
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Reward", b =>
+                {
+                    b.Navigation("Recipients");
+                });
+
+            modelBuilder.Entity("Trinity.Mvc.Domain.Scene", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Trinity.Mvc.Domain.State", b =>
