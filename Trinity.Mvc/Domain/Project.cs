@@ -50,7 +50,6 @@ namespace Trinity.Mvc.Domain
         public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
         public virtual ICollection<ProjectSupporter> Supporters { get; set; } = new List<ProjectSupporter>();
         public virtual ICollection<Event> Events { get; set; } = new List<Event>();
-        public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
 
         public int DaysPassed()
         {

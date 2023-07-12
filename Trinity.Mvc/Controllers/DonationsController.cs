@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
+using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -25,15 +27,34 @@ namespace Trinity.Mvc.Controllers
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Amount,Message,FundraiserId")] Donation donation)
+        public async Task<JsonResult> Create(DonationInputModel donation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(donation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                _context.Add(new Donation
+                {
+                    Amount = donation.Amount,
+                    Message = donation.Message,
+                    FundraiserId = donation.FundraiserId,
+                    DonorId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+                });
+                if (_context.ProjectSupporters.Where(s => s.ProjectId == donation.ProjectId && s.SupporterId == User.FindFirst(ClaimTypes.NameIdentifier)!.Value).Any())
+                {
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Thank you for your donation");
+                }
+                else
+                {
+                    _context.ProjectSupporters.Add(new ProjectSupporter
+                    {
+                        ProjectId = donation.ProjectId,
+                        SupporterId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+                    });
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Thank you for your donation");
+                }
             }
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return new JsonResult("Something went wrong.");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

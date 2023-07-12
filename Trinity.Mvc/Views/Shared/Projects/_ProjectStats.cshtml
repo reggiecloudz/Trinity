@@ -53,14 +53,14 @@
         </ul>
         @if (SignInManager.IsSignedIn(User))
         {
-            <a class="btn btn-primary-soft btn-block w-100 my-3" data-bs-toggle="modal" data-bs-target="#makeDonationModal">
+            <a class="btn btn-cta-soft btn-block w-100 my-3" data-bs-toggle="modal" data-bs-target="#makeDonationModal">
                 <i class="fa-solid fa-heart me-1"></i>
                 Donate 
             </a>
         }
         else
         {
-            <a class="btn btn-primary-soft btn-block w-100 my-3" asp-controller="Account" asp-action="Login">
+            <a class="btn btn-cta-soft btn-block w-100 my-3" asp-controller="Account" asp-action="Login">
                 <i class="fa-solid fa-heart me-1"></i>
                 Donate 
             </a>

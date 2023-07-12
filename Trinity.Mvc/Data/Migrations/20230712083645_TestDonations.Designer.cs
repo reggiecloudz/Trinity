@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trinity.Mvc.Data;
 
@@ -10,9 +11,10 @@ using Trinity.Mvc.Data;
 namespace Trinity.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230712083645_TestDonations")]
+    partial class TestDonations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -588,6 +590,9 @@ namespace Trinity.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<long?>("ProjectId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
@@ -596,6 +601,8 @@ namespace Trinity.Mvc.Data.Migrations
                     b.HasIndex("DonorId");
 
                     b.HasIndex("FundraiserId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Donations");
                 });
@@ -1641,6 +1648,10 @@ namespace Trinity.Mvc.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Trinity.Mvc.Domain.Project", null)
+                        .WithMany("Donations")
+                        .HasForeignKey("ProjectId");
+
                     b.Navigation("Donor");
 
                     b.Navigation("Fundraiser");
@@ -2126,6 +2137,8 @@ namespace Trinity.Mvc.Data.Migrations
 
             modelBuilder.Entity("Trinity.Mvc.Domain.Project", b =>
                 {
+                    b.Navigation("Donations");
+
                     b.Navigation("Events");
 
                     b.Navigation("Expenditures");

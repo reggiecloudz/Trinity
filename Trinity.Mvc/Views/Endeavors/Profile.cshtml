@@ -32,3 +32,49 @@
 <partial name="_Footer" />
 
 <vc:make-donation></vc:make-donation>
+
+@section Scripts {
+   <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $.validator.unobtrusive.parse($("#donation-form"));
+        });
+
+        function flashToast(data) {
+            const flashToast = document.getElementById('flashToast');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(flashToast);
+            const toastBody = document.getElementById('flashToastBody');
+            toastBody.innerHTML = data;
+            toastBootstrap.show()
+        }
+
+        function SaveStudent() {
+            if ($("#donation-form").valid()) {
+                var myModalEl = document.getElementById('makeDonationModal');
+                var modal = bootstrap.Modal.getInstance(myModalEl)
+                     
+                var formData = $("#donation-form").serialize();
+                console.log(formData);
+                $.ajax({
+                    type: "POST",
+                    beforeSend: function (xhr) {  
+                        xhr.setRequestHeader("XSRF-TOKEN",  
+                            $('input:hidden[name="__RequestVerificationToken"]').val());  
+                    },  
+                    url: "/Donations/Create",
+                    data: formData,
+                    success: function (response) {
+                        modal.hide();
+                        flashToast(response);
+                    },
+                    error: function (request, status, error) {
+                        modal.hide();
+                        flashToast(request.responseText);
+                    }
+
+                });
+            }
+        }
+        
+    </script>
+}

@@ -1,4 +1,4 @@
-@model Donation
+@model DonationInputModel
 
 <div class="modal fade" id="makeDonationModal" tabindex="-1" aria-labelledby="makeDonationLabel"
     aria-hidden="true">
@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="donation-form" method="post" asp-controller="Donations" asp-action="Create">
+                <form id="donation-form" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group mb-3">
                         <label asp-for="Amount" class="control-label"></label>
@@ -23,11 +23,12 @@
                     </div>
                     <div class="form-group">
                         <input type="hidden" asp-for="FundraiserId" class ="form-control" value="@ViewBag.FundraiserId" />
+                        <input type="hidden" asp-for="ProjectId" class ="form-control" value="@ViewBag.ProjectId" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="donation-form" class="btn btn-primary">Save now</button>
+                <button type="button" form="donation-form" class="btn btn-primary" onclick="SaveStudent()">Save now</button>
                 <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
             </div>
         </div>

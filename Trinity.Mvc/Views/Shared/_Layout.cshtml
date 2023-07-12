@@ -81,7 +81,8 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-	<partial name="_Toast" />
+	<partial name="_LiveToast" />
+	<partial name="_FlashToast" />
     @RenderBody()
 	@* @await Component.InvokeAsync("ChatBox") *@
 
