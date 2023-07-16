@@ -36,7 +36,6 @@ namespace Trinity.Mvc.Controllers
             var posts = await _context.Posts
                 .Where(p => p.DiscussionGroupId == discussion!.Id)
                 .Include(p => p.Author)
-                .Include(p => p.Likes)
                 .Include(p => p.Topic)
                 .Include(p => p.Replies)
                 .ToListAsync();

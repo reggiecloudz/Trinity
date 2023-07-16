@@ -43,7 +43,6 @@ namespace Trinity.Mvc.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.DiscussionGroup)
                 .Include(p => p.Topic)
-                .Include(p => p.Likes)
                 .Include(p => p.Replies)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             

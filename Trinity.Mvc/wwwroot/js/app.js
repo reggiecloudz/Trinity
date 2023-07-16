@@ -296,3 +296,40 @@ function saveScene() {
         });
     }
 }
+
+function likeScene() {
+    // var formData = new FormData($(`#like-form-${formValue}`)[0]);
+    console.log(sceneId);
+    // var lightbox = GLightbox({
+    //     selector: 'data-glightbox',
+    // });
+
+    $.ajax({
+        type: "POST",
+        url: `/Scenes/${sceneId})}/Like`,
+        data: JSON.stringify({ SceneId: sceneId }),
+        contentType: "application/json",
+        success: function (response) {
+            console.log(response);
+            // var likeIcon = `like-icon-${response.sceneId}`;
+            // console.log(likeIcon);
+            if (response.isLiked === true) {
+                alert('Something is happening')
+                // document.getElementById(likeIcon).classList.add("bi", "bi-hand-thumbs-up-fill", "pe-1");
+                // $(`#like-icon-${response.sceneId}`).removeClass();
+                // $(`#like-icon-${response.sceneId}`).addClass('bi bi-hand-thumbs-up-fill pe-1');
+                // $(`#like-text-${response.sceneId}`).html(`Liked (${response.likes})`)
+            }
+            else {
+                alert('Something may be happening')
+            }
+            // document.getElementById(`like-form-${response.sceneId}`).reset();
+            // lightbox.reload();
+        },
+        error: function (request, status, error) {
+            document.getElementById(`like-form-${formValue}`).reset();
+            flashToast(request.responseText);
+        }
+
+    });
+}

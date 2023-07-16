@@ -22,7 +22,6 @@ namespace Trinity.Mvc.ViewComponents
             var posts = await _context.Posts
                 .Where(p => p.AuthorId == authorId)
                 .Include(p => p.Author)
-                .Include(p => p.Likes)
                 .Include(p => p.Replies)
                 .ToListAsync();
             return View(posts);

@@ -69,6 +69,7 @@ namespace Trinity.Mvc.Controllers
         }
 
         [Route("{sceneId}/[action]")]
+        [HttpPost]
         public async Task<JsonResult> Like(long? sceneId)
         {
             if (sceneId == null)
@@ -83,6 +84,7 @@ namespace Trinity.Mvc.Controllers
                 return new JsonResult("Scene not found");
             }
 
+            var likes = await _context.Likes.Where(l => l.ObjectId == sceneId && l.Type == LikableType.Scene).ToListAsync();
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
             if (_likeRepo.LikeExist(scene.Id, LikableType.Scene, currentUserId))
@@ -94,7 +96,12 @@ namespace Trinity.Mvc.Controllers
                 }
                 _context.Likes.Remove(like);
                 _context.SaveChanges();
-                return new JsonResult("");
+                return new JsonResult(new SceneInteractionModel
+                {
+                    SceneId = scene.Id,
+                    IsLiked = false,
+                    Likes = likes.Count() - 1
+                });
             }
 
             var newLike = new Like
@@ -104,8 +111,13 @@ namespace Trinity.Mvc.Controllers
                 UserId = currentUserId
             };
             _context.Likes.Add(newLike);
-
-            return new JsonResult("");
+            _context.SaveChanges();
+            return new JsonResult(new SceneInteractionModel
+            {
+                SceneId = scene.Id,
+                IsLiked = true,
+                Likes = likes.Count() + 1
+            });
         }
     }
 }

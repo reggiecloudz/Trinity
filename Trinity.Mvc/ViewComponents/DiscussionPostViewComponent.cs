@@ -22,7 +22,6 @@ namespace Trinity.Mvc.ViewComponents
             var posts = await _context.Posts
                 .Where(p => p.DiscussionGroupId != discussionId)
                 .Include(p => p.Topic)
-                .Include(p => p.Likes)
                 .Include(p => p.Replies)
                 .ToListAsync();
             return View(posts);

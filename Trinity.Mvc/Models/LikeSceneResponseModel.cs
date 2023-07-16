@@ -7,7 +7,9 @@ namespace Trinity.Mvc.Models
 {
     public class LikeSceneResponseModel
     {
-        public bool Liked { get; set; }
+        public long SceneId { get; set; }
+        public bool IsLiked { get; set; }
+        public long Likes { get; set; }
         public string Message { get; set; } = string.Empty;
     }
 }

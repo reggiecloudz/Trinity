@@ -29,6 +29,5 @@ namespace Trinity.Mvc.Domain
         public virtual ApplicationUser? Author { get; set; }
 
         public virtual ICollection<Reply> Replies { get; set; } = new List<Reply>();
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }

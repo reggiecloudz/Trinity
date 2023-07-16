@@ -1,0 +1,25 @@
+@model SceneInteractionModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (Model.IsLiked)
+    {
+        <button  class="nav-link btn btn-link active" type="button">
+            <i id="like-icon-@Model.SceneId" class="bi bi-hand-thumbs-up-fill pe-1"></i> <span id="like-text-@Model.SceneId">Liked (@Model.Likes)</span>
+        </button>
+    }
+    else
+    {
+        <button class="nav-link btn btn-link" type="button"> 
+            <i id="like-icon-@Model.SceneId" class="bi bi-hand-thumbs-up pe-1"></i><span id="like-text-@Model.SceneId">Like (@Model.Likes)</span>
+        </button>
+    }
+    
+}
+else
+{
+    <a class="nav-link" asp-controller="Account" asp-action="Login"> 
+        <i class="bi bi-hand-thumbs-up pe-1"></i>Like (@Model.Likes)
+    </a>
+}
