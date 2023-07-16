@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="scene-form" method="post" asp-controller="Scenes" asp-action="Create" novalidate enctype="multipart/form-data">
+                <form id="scene-form" method="post" novalidate enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group mb-3">
                         <label asp-for="Title" class="control-label"></label>
@@ -28,12 +28,11 @@
                     </div>
                     <div class="form-group">
                         <input type="hidden" asp-for="JourneyId" class ="form-control" value="@ViewBag.JourneyId" />
-                        <input type="hidden" asp-for="ProjectId" class ="form-control" value="@ViewBag.ProjectId" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="scene-form" class="btn btn-primary">Save now</button>
+                <button type="button" form="scene-form"  onclick="saveScene()"class="btn btn-primary">Save</button>
                 <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
             </div>
         </div>

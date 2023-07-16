@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Trinity.Mvc.Data;
 using Trinity.Mvc.Domain;
 using Trinity.Mvc.Infrastructure.Helpers;
+using Trinity.Mvc.Models;
 
 namespace Trinity.Mvc.Controllers
 {
@@ -107,25 +108,32 @@ namespace Trinity.Mvc.Controllers
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,PhotoUpload,CauseId,CityId")] Project project)
+        public async Task<JsonResult> Create(ProjectInputModel model)
         {
             if (ModelState.IsValid)
             {
                 string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/projects");
-                string photoName = Guid.NewGuid().ToString() + "_" + project.PhotoUpload!.FileName;
+                string photoName = Guid.NewGuid().ToString() + "_" + model.PhotoUpload!.FileName;
                 string photoFilePath = Path.Combine(uploadsDir, photoName);
                 FileStream fs = new FileStream(photoFilePath, FileMode.Create);
-                await project.PhotoUpload.CopyToAsync(fs);
+                await model.PhotoUpload.CopyToAsync(fs);
                 fs.Close();
-                project.Photo = photoName;
-                project.Slug = FriendlyUrlHelper.GetFriendlyTitle(project.Name);
-                project.ManagerId = HttpContext.User.FindFirst("UserId")!.Value;
-                _context.Add(project);
+
+                var project = new Project
+                {
+                    Slug = FriendlyUrlHelper.GetFriendlyTitle(model.Name),
+                    Name = model.Name,
+                    Photo = photoName,
+                    CityId = model.CityId,
+                    CauseId = model.CauseId,
+                    ManagerId = HttpContext.User.FindFirst("UserId")!.Value
+                };
+                await _context.AddAsync(project);
                 await _context.SaveChangesAsync();
 
                 _context.Proposals.Add(new Proposal { ProjectId = project.Id });
                 _context.Journeys.Add(new Journey { ProjectId = project.Id });
-                _context.Fundraisers.Add(new Fundraiser { ProjectId = project.Id });
+                _context.Fundraisers.Add(new Fundraiser { ProjectId = project.Id, Goal = model.FinancialGoal });
                 _context.ProjectSupporters.Add(new ProjectSupporter
                 {
                     ProjectId = project.Id,
@@ -135,10 +143,15 @@ namespace Trinity.Mvc.Controllers
                 });
                 _context.SaveChanges();
 
-                return RedirectToAction(nameof(MembersController.Projects), "Members", new { id = HttpContext.User.FindFirst("UserId")!.Value });
+                return new JsonResult(new ProjectResponseModel
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    Cause = _context.Causes.Where(c => c.Id == project.CauseId).Select(c => c.Name).FirstOrDefault()!,
+                    Message = "Your project has been created"
+                });
             }
-            ViewData["CauseId"] = new SelectList(_context.Causes, "Id", "Id", project.CauseId);
-            return View(project);
+            return new JsonResult("Your project was not created");
         }
 
         [Route("{id}/Edit")]
@@ -324,6 +337,31 @@ namespace Trinity.Mvc.Controllers
                 return NotFound();
             }
             ViewData["ProjectId"] = project.Id;
+            return View(project);
+        }
+
+        [Route("{id}/Fundraiser")]
+        public async Task<IActionResult> Fundraiser(long? id)
+        {
+            if (id == null || _context.Projects == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.City)
+                .Include(p => p.Cause)
+                .Include(p => p.Manager)
+                .Include(p => p.Fundraiser)
+                    .ThenInclude(e => e!.Donations)
+                        .ThenInclude(i => i.Donor)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+            ViewData["FundraiserId"] = project.Fundraiser!.Id;
             return View(project);
         }
 

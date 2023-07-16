@@ -1,0 +1,53 @@
+@model Fundraiser
+
+<div class="card h-100">
+    <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+        <h1 class="h4 card-title">Fundraiser</h1>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
+            <div class="btn-group" role="group" aria-label="Button Group">
+                <a class="btn btn-primary-soft" href="#"> 
+                    <i class="fa-solid fa-pencil pe-1"></i> Edit
+                </a>
+                <button class="btn btn-complementary-soft" type="button" data-bs-toggle="modal" data-bs-target="#saveRewardModal"> 
+                    <i class="fa-solid fa-plus pe-1"></i> Reward
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Donations </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Rewards </a> </li>
+        </ul>
+
+        <div class="tab-content mb-0 pb-0">
+            <div class="tab-pane fade show active" id="tab-1">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Donor</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Donations)
+                        {
+                            <tr>
+                                <td scope="row">@item.Donor!.FullName</td>
+                                <td>@item.Amount</td>
+                                <td>
+                                    <a href="#">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tab-2">
+                @await Component.InvokeAsync("Rewards", new { fundraiserId = Model.Id })
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,10 +1,6 @@
 @model Project
 @{
-    ViewData["Title"] = $"{Model.Name} Journey";
-}
-
-@section Stylesheets {
-    <link rel="stylesheet" type="text/css" href="~/assets/vendor/glightbox-master/dist/css/glightbox.min.css">
+    ViewData["Title"] = $"{Model.Name} Fundraiser";
 }
 
 <partial name="_NavBar" />
@@ -17,24 +13,20 @@
             </div>
 
             <div class="col-lg-9 vstack gap-4">
-                @await Html.PartialAsync("Journeys/_JourneyScenes", Model)
+                @await Html.PartialAsync("Fundraiser/_FundraiserTabs", Model.Fundraiser)
             </div>
         </div>
     </div>
 </main>
 
-<vc:save-scene></vc:save-scene>
-
-@section JavaScripts {
-    <script src="~/assets/vendor/glightbox-master/dist/js/glightbox.min.js"></script>
-}
+<vc:save-reward></vc:save-reward>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/app.js"></script>
     <script>
         $(document).ready(() => {
-            $.validator.unobtrusive.parse($("#scene-form"));
+            $.validator.unobtrusive.parse($("#reward-form"));
         });
     </script>
 }

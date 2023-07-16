@@ -38,21 +38,9 @@ namespace Trinity.Mvc.Controllers
                     FundraiserId = donation.FundraiserId,
                     DonorId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
                 });
-                if (_context.ProjectSupporters.Where(s => s.ProjectId == donation.ProjectId && s.SupporterId == User.FindFirst(ClaimTypes.NameIdentifier)!.Value).Any())
-                {
-                    await _context.SaveChangesAsync();
-                    return new JsonResult("Thank you for your donation");
-                }
-                else
-                {
-                    _context.ProjectSupporters.Add(new ProjectSupporter
-                    {
-                        ProjectId = donation.ProjectId,
-                        SupporterId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
-                    });
-                    await _context.SaveChangesAsync();
-                    return new JsonResult("Thank you for your donation");
-                }
+                await _context.SaveChangesAsync();
+                return new JsonResult("Thank you for your donation");
+                
             }
             return new JsonResult("Something went wrong.");
         }

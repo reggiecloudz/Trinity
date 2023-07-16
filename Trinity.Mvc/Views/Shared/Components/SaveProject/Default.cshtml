@@ -9,21 +9,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="project-form" method="post" asp-controller="Projects" asp-action="Create" novalidate enctype="multipart/form-data">
+                <form id="project-form" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group mb-3">
-                        <label asp-for="Project.Name" class="control-label"></label>
-                        <input asp-for="Project.Name" class="form-control" />
-                        <span asp-validation-for="Project.Name" class="text-danger"></span>
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                     <div class="form-group mb-3">
+                        <label asp-for="FinancialGoal" class="control-label"></label>
+                        <input asp-for="FinancialGoal" class="form-control" />
+                        <span asp-validation-for="FinancialGoal" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Project.PhotoUpload" class="control-label"></label>
-                        <input asp-for="Project.PhotoUpload" class="form-control" type="file" />
-                        <span asp-validation-for="Project.PhotoUpload" class="text-danger"></span>
+                        <label asp-for="PhotoUpload" class="control-label"></label>
+                        <input asp-for="PhotoUpload" class="form-control" type="file" />
+                        <span asp-validation-for="PhotoUpload" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Project.CauseId" class="control-label">Cause</label>
-                        <select asp-for="Project.CauseId" class ="form-select" asp-items="Model.Causes"></select>
+                        <label asp-for="CauseId" class="control-label">Cause</label>
+                        <select asp-for="CauseId" class ="form-select" asp-items="Model.Causes"></select>
                     </div>
                     <div class="form-group mb-3">
                         <label class="control-label">State</label>
@@ -32,13 +37,13 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Project.CityId" class="control-label">City</label>
-                        <select asp-for="Project.CityId" class ="form-select" id="CityId"></select>
+                        <label asp-for="CityId" class="control-label">City</label>
+                        <select asp-for="CityId" class ="form-select" id="CityId"></select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="project-form" class="btn btn-primary">Save now</button>
+                <button type="button" form="project-form" onclick="saveProject()" class="btn btn-primary">Save</button>
                 <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
             </div>
         </div>

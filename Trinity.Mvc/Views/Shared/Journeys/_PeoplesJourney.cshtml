@@ -9,7 +9,7 @@
             @foreach (var item in Model.Journey!.Scenes)
             {
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a href="~/media/scenes/@item.Photo" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
+                    <a href="~/media/scenes/@item.Photo" data-gallery="image-popup" data-glightbox="description: .custom-desc-@item.Id; descPosition: left;">
                         <img class="rounded img-fluid" src="~/media/scenes/@item.Photo" alt="">
                     </a>
                     <ul class="nav nav-stack py-2 small">
@@ -20,7 +20,7 @@
                             <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>3k </a>
                         </li>
                     </ul>
-                    <div class="glightbox-desc custom-desc2">
+                    <div class="glightbox-desc custom-desc-@item.Id">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
                                 <div class="avatar me-2">
@@ -35,11 +35,11 @@
                                 </div>
                             </div>
                             <div class="dropdown">
-                                <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction-@item.Id" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots"></i>
                                 </a>
                                 <!-- Card feed action dropdown menu -->
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction-@item.Id">
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
@@ -54,16 +54,17 @@
                         <ul class="nav nav-stack py-3 small">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
+                                @* <a class="nav-link" href="#!"> <i class="bi bi-hand-thumbs-up pe-1"></i>Liked (56)</a> *@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
                             </li>
                             <li class="nav-item dropdown ms-auto">
-                                <a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link mb-0" href="#" id="cardShareAction-@item.Id" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-reply-fill fa-flip-horizontal pe-1"></i>Share (3)
                                 </a>
                                 <!-- Card share action dropdown menu -->
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction-@item.Id">
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>

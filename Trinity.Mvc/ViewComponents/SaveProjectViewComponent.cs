@@ -23,7 +23,6 @@ namespace Trinity.Mvc.ViewComponents
         {
             return View(new ProjectInputModel
             {
-                Project = new Project(),
                 Causes = new SelectList(_context.Causes, "Id", "Name"),
                 States = new SelectList(_context.States, "Id", "Name")
             });

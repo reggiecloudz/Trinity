@@ -22,8 +22,11 @@
 <vc:save-project></vc:save-project>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/app.js"></script>
     <script>
         $(document).ready(() => {
+            $.validator.unobtrusive.parse($("#project-form"));
             $('#CityId').attr('disabled', true);
             $('#States').change(() => {
                 var stateId = $("#States").val();
@@ -39,29 +42,6 @@
                 }
             });
         });
-        function loadCities(stateId) {
-                $('#CityId').empty();
-
-                $.ajax({
-                    url: `/api/States/${stateId}/Cities`,
-                    success: (response) => {
-                        console.log(response);
-                        if (response != null && response != undefined && response.length > 0) {
-                            $('#CityId').attr('disabled', false);
-                            $('#CityId').append('<option value="-1">--Select City--</option>');
-                            $.each(response, (i, data) => {
-                                $('#CityId').append(`<option value="${data.id}">${data.name}</option>`);
-                            });
-                        }
-                        else {
-                            $('#CityId').attr('disabled', true);
-                            $('#CityId').append('<option value="-1">--No Cities found--</option>');
-                        }
-                    },
-                    error: (error) => {
-                        alert(error);
-                    }
-                })
-            }
+        
     </script>
 }

@@ -44,6 +44,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN"); 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 

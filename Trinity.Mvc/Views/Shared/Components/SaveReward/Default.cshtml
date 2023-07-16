@@ -1,0 +1,45 @@
+@model Reward
+
+<div class="modal fade" id="saveRewardModal" tabindex="-1" aria-labelledby="saveRewardLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveRewardLabel">Save Reward</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reward-form" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Item" class="control-label"></label>
+                        <input asp-for="Item" class="form-control" />
+                        <span asp-validation-for="Item" class="text-danger"></span>
+                    </div>
+                     <div class="form-group mb-3">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="AmountNeeded" class="control-label"></label>
+                        <input asp-for="AmountNeeded" class="form-control" />
+                        <span asp-validation-for="AmountNeeded" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="PhotoUpload" class="control-label"></label>
+                        <input asp-for="PhotoUpload" class="form-control" type="file" />
+                        <span asp-validation-for="PhotoUpload" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="FundraiserId" class ="form-control" value="@ViewBag.FundraiserId" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" form="reward-form" onclick="saveReward()" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-cta-soft me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

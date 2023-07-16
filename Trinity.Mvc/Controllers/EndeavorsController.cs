@@ -162,11 +162,5 @@ namespace Trinity.Mvc.Controllers
             }
             return View(project);
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
     }
 }

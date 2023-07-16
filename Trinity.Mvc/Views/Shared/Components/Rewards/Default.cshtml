@@ -1,0 +1,25 @@
+@model IEnumerable<Reward>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Amount Needed</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="rewardData">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td scope="row">@item.Item</td>
+                <td>@item.Quantity</td>
+                <td>@item.AmountNeeded</td>
+                <td>
+                    <a href="#">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
